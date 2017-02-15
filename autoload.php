@@ -1,7 +1,5 @@
 <?php
 
-//require_once __DIR__ . '/vendor/autoload.php';
-
 // on créé une fonction autoload avec en parametre le nom de la classe recherchée
 function __autoload($className) 
 {
@@ -15,7 +13,7 @@ function __autoload($className)
 		if(file_exists($fileName)) 
 		{
 			// inclu le contenu du fichier
-			include_once($fileName);
+			require_once($fileName);
 		} 
 	}
 }

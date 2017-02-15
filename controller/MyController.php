@@ -1,8 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-require_once 'Controller.php';
+require_once __DIR__ . '/../autoload.php';
 
 class MyController extends Controller
 {

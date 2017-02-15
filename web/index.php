@@ -4,16 +4,19 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . "/../autoload.php";
 
-// instanciation de la classe
-$model1 = new Model1();
+$collection = new RouteCollection();
+$collection->attachRoute(new Route('/', array(
+    '_controller' => 'MyController::testAction',
+    'methods' => 'GET'
+)));
 
-// appel de la fonction toString
-echo $model1->toString();
+$collection->attachRoute(new Route('/test', array(
+    '_controller' => 'TestController::testAction',
+    'methods' => 'GET'
+)));
 
-$controller1 = new controller1();
+$router = new Router($collection);
+// $router->setBasePath('/');
+// $route = $router->matchCurrentRequest();
 
-echo "</br>";
-
-echo $controller1->toString();
-
-	
+// var_dump($route);
