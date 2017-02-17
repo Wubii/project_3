@@ -18,10 +18,17 @@ elseif ($requestUrl == "/test")
 
 	$controller->testAction();
 }
+elseif ($requestUrl == "/autoload")
+{
+	$controller = new Controller1();
+
+	$controller->toStringAction();
+}
 else 
 {
 	echo "Erreur : URL non valide ! ";
 }
+
 
 
 
