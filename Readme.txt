@@ -5,7 +5,6 @@ RewriteRule ^(.*)$ index.php [NC,L]  // prend tout et balance dans le fichier in
 
 router = fait le lien entre l’url et l’action, la fonction demandée
 
-Pourquoi on appelle le dossier “var” ?
 
 Twig téléchargé avec git
 
