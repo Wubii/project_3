@@ -4,19 +4,25 @@ error_reporting(E_ALL);
 
 require_once __DIR__ . "/../autoload.php";
 
-$collection = new RouteCollection();
-$collection->attachRoute(new Route('/', array(
-    '_controller' => 'MyController::testAction',
-    'methods' => 'GET'
-)));
+$requestUrl = $_SERVER['REQUEST_URI'];
 
-$collection->attachRoute(new Route('/test', array(
-    '_controller' => 'TestController::testAction',
-    'methods' => 'GET'
-)));
+if($requestUrl == "/") 
+{
+	$controller = new MyController();
 
-$router = new Router($collection);
-// $router->setBasePath('/');
-// $route = $router->matchCurrentRequest();
+	$controller->testAction();
+}
+elseif ($requestUrl == "/test")
+{
+	$controller = new TestController();
 
-// var_dump($route);
+	$controller->testAction();
+}
+else 
+{
+	echo "Erreur : URL non valide ! ";
+}
+
+
+
+
