@@ -53,11 +53,11 @@ class Connexion
         }
         catch(Exception $e)
         {
-            echo "La table <b>" . $name . "</b> n'existe pas </br>";
+            //echo "La table <b>" . $name . "</b> n'existe pas </br>";
             return false;
         } 
         
-        echo "La table <b>" . $name . "</b> existe deja </br>";
+        //echo "La table <b>" . $name . "</b> existe deja </br>";
         return true;  
     }
 

@@ -8,10 +8,9 @@ class Article extends Entity
     private $author = "Jean FORTEROCHE";
     private $date = null;
 
-    private $isNew = true;
-
     private $stmtCreate = null;
     private $stmtUpdate = null;
+    private $stmtRemove = null;
 
     // A chaque "new Article" on verifie que la table existe bien
     function __construct() 
@@ -32,9 +31,7 @@ class Article extends Entity
                 PRIMARY KEY (id))';
 
             Connexion::getConnexion()->exec($sql);
-            echo "Table mb_article created successfully </br>";
-
-
+            //echo "Table mb_article created successfully </br>";
         }
 
         // CREATE new article
@@ -46,7 +43,7 @@ class Article extends Entity
 
     public function persist()
     {
-        if($this->isNew == true)
+        if($this->id == 0)
         {
             $this->stmtCreate->execute(array(
                 'title' => $this->title,
@@ -56,10 +53,6 @@ class Article extends Entity
             ));
 
             $this->id = Connexion::getConnexion()->getPdo()->lastInsertId();
-
-            $this->isNew = false;
-
-            echo $this->id . "</br>";
         }
         else
         {
@@ -70,15 +63,76 @@ class Article extends Entity
                 'date' => $this->date->format("Y-m-d H:i:s"),
                 'id' => $this->id
             ));
-
-            echo $this->id;
         }
         
     }
 
     public function remove()
     {
+        try
+        {
+            Connexion::getConnexion()->getPdo()->exec("DELETE FROM mb_article WHERE id=" . $this->id);
+        }
+        catch(Exception $e)
+        { 
+            return false;
+        } 
 
+        return true;
+    }
+
+    public static function findAll()
+    {
+        $articles = array();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article");
+
+        while($data = $response->fetch())
+        {
+            $article = new Article();
+
+            $article->setId($data['id']);
+            $article->setTitle($data['title']);
+            $article->setContent($data['content']);
+            $article->setAuthor($data['author']);
+            $article->setDate(new DateTime($data['date']));
+
+            array_push($articles, $article);
+        }
+
+        $response->closeCursor();
+
+        return $articles;
+    }
+
+    public static function findById($id)
+    {
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article WHERE id=" . $id);
+        
+        $dataArray = $response->fetchAll();
+        if(empty($dataArray) == false)
+        {
+            $article = new Article();
+
+            $article->setId($dataArray[0]['id']);
+            $article->setTitle($dataArray[0]['title']);
+            $article->setContent($dataArray[0]['content']);
+            $article->setAuthor($dataArray[0]['author']);
+            $article->setDate(new DateTime($dataArray[0]['date']));
+
+            return $article;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getId()
@@ -108,6 +162,30 @@ class Article extends Entity
     public function getContent()
     {
         return $this->content;
+    }
+
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
     }
 } 
 
