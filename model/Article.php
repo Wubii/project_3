@@ -10,6 +10,9 @@ class Article extends Entity
 
     private $isNew = true;
 
+    private $stmtCreate = null;
+    private $stmtUpdate = null;
+
     // A chaque "new Article" on verifie que la table existe bien
     function __construct() 
     {
@@ -30,11 +33,46 @@ class Article extends Entity
 
             Connexion::getConnexion()->exec($sql);
             echo "Table mb_article created successfully </br>";
+
+
         }
+
+        // CREATE new article
+        $this->stmtCreate = Connexion::getConnexion()->getPdo()->prepare("INSERT INTO mb_article (title, content, author, date) VALUES (:title, :content, :author, :date)");
+        
+        // UPDATE article
+        $this->stmtUpdate = Connexion::getConnexion()->getPdo()->prepare("UPDATE mb_article SET title = :title, content = :content, author = :author, date = :date WHERE id = :id");
     }
 
     public function persist()
     {
+        if($this->isNew == true)
+        {
+            $this->stmtCreate->execute(array(
+                'title' => $this->title,
+                'content' => $this->content,
+                'author' => $this->author,
+                'date' => $this->date->format("Y-m-d H:i:s")
+            ));
+
+            $this->id = Connexion::getConnexion()->getPdo()->lastInsertId();
+
+            $this->isNew = false;
+
+            echo $this->id . "</br>";
+        }
+        else
+        {
+            $this->stmtUpdate->execute(array(
+                'title' => $this->title,
+                'content' => $this->content,
+                'author' => $this->author,
+                'date' => $this->date->format("Y-m-d H:i:s"),
+                'id' => $this->id
+            ));
+
+            echo $this->id;
+        }
         
     }
 

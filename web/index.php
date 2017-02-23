@@ -27,8 +27,18 @@ elseif ($requestUrl == "/autoload")
 elseif ($requestUrl == "/article/new")
 {
     $article1 = new Article();
+    $article1->setTitle("Un nouvel article");
+    $article1->setContent("contenu 0");
+    $article1->persist();
 
-    $article2 = new Article();
+    $article1->setTitle("Une nouvel article");
+    $article1->setContent("contenu 1");
+    $article1->persist();
+
+    // $article2 = new Article();
+    // $article2->setTitle("Un deuxieme nouvel article");
+    // $article2->setContent("deuxieme contenu");
+    // $article2->persist();
 }
 else 
 {

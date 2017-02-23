@@ -1,7 +1,7 @@
 <?php
 
 // lorsqu'on instancie une class le constructeur est forcement appele
-// class singleton = globale a toute l'application
+// class singleton = globale a toute l'application //constante
 class Connexion
 {
     private static $connexion = null;
@@ -16,7 +16,6 @@ class Connexion
     {
         try
         {
-            echo "TOTO</br>";
             $this->pdo = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->dbName . ';charset=utf8', $this->login, $this->password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
@@ -36,11 +35,13 @@ class Connexion
     
         return self::$connexion;
     }
+ 
 
     public function getPdo()
     {
         return $this->pdo;
     }
+
 
     public function tableExist($name)
     {
@@ -60,10 +61,12 @@ class Connexion
         return true;  
     }
 
+
     public function query($statement)
     {
         return $this->pdo->query($statement);
     }
+
 
     public function exec($statement)
     {
