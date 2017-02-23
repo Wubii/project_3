@@ -24,6 +24,12 @@ elseif ($requestUrl == "/autoload")
 
 	$controller->toStringAction();
 }
+elseif ($requestUrl == "/article/new")
+{
+    $article1 = new Article();
+
+    $article2 = new Article();
+}
 else 
 {
 	echo "Erreur : URL non valide ! ";

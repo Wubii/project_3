@@ -13,3 +13,5 @@ private = la variable nest pas visible de l’extérieur de la classe. Private s
 protected = la variable nest pas visible depuis l’extérieur de la classe sauf pour les descendants.
 
 public static = la variable est visible de l’extérieur de la classe. Pas besoin d’instancier la classe pour travailler avec.
+
+singleton = une class qui ne sera instanciee qu'une seule fois dans toute l'application (ex: connexion bdd)
