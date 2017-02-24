@@ -24,6 +24,44 @@ elseif ($requestUrl == "/autoload")
 
 	$controller->toStringAction();
 }
+elseif ($requestUrl == "/article/new")
+{
+    $article1 = new Article();
+    $article1->setTitle("Un nouvel article");
+    $article1->setContent("contenu 0");
+    $article1->persist();
+
+    $article1->setTitle("Une nouvel article");
+    $article1->setContent("contenu 1");
+    $article1->persist();
+
+    // $article2 = new Article();
+    // $article2->setTitle("Un deuxieme nouvel article");
+    // $article2->setContent("deuxieme contenu");
+    // $article2->persist();
+}
+elseif ($requestUrl == "/article/remove")
+{
+    $article = Article::findById(22);
+
+    if($article != null)
+    {
+        echo $article->getTitle() . "</br>";
+
+        $result = $article->remove();
+    }
+}
+elseif ($requestUrl == "/article/list")
+{
+    $articles = Article::findAll();
+
+    foreach ($articles as $article) 
+    {
+        echo "Id : " . $article->getId() . "</br>";
+        //$article->setTitle($article->getId() . "nini");
+        //$article->persist();
+    }
+}
 else 
 {
 	echo "Erreur : URL non valide ! ";
