@@ -1,19 +1,25 @@
 <?php
 
-// on créé une fonction autoload avec en parametre le nom de la classe recherchée
-function __autoload($className) 
+spl_autoload_register(function ($class)
 {
-	// récupère le fichier xml de configuration de l'autoload
-	$paths = simplexml_load_file(__DIR__ . "/config/autoload.xml");
+	$fileName = __DIR__ . "/model/" . $class . ".php";
 
-	foreach($paths as $path) 
+	if(file_exists($fileName)) 
 	{
-		$fileName = __DIR__ . "/" . $path->__toString() . "/" . $className . ".php";
+		require_once($fileName);
+	} 
+});
 
-		if(file_exists($fileName)) 
-		{
-			// inclu le contenu du fichier
-			require_once($fileName);
-		} 
-	}
-}
+spl_autoload_register(function ($class)
+{
+	$fileName = __DIR__ . "/controller/" . $class . ".php";
+
+	if(file_exists($fileName)) 
+	{
+		require_once($fileName);
+	} 
+});
+
+require_once(__DIR__ . "/lib/Twig/Autoloader.php");
+
+Twig_Autoloader::register();

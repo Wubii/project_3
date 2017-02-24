@@ -4,13 +4,17 @@
 // class singleton = globale a toute l'application //constante
 class Connexion
 {
+    // Initialisation des variables globales
+
     private static $connexion = null;
 
     private $pdo = null;
     private $host = "localhost";
     private $login = "root";
-    private $password = "26280_christophe";
+    private $password = "Wombat64";
     private $dbName = "mb_forteroche";
+
+    // Constructeur de la méthode
 
     private function __construct() 
     {
@@ -26,6 +30,8 @@ class Connexion
         } 
     }
 
+    // Méthode qui appelle le constructeur de la classe
+
     public static function getConnexion()
     {
         if(is_null(self::$connexion))
@@ -36,6 +42,7 @@ class Connexion
         return self::$connexion;
     }
  
+    // Initialise l'objet PDO
 
     public function getPdo()
     {
@@ -45,6 +52,7 @@ class Connexion
 
     public function tableExist($name)
     {
+        // requete sql qui sélectionne la table que l'on souhaite : $name
         $sql = 'SELECT 1 FROM ' . $name . ' LIMIT 1 ';
         
         try

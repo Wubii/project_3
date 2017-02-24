@@ -24,7 +24,7 @@ class Article extends Entity
             // cree la table article si elle n'existe pas
             $sql = 'CREATE TABLE IF NOT EXISTS mb_article (
                 id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                title VARCHAR(250) NOT NULL,
+                title VARCHAR(255) NOT NULL,
                 content TEXT NOT NULL,
                 author VARCHAR(40) NOT NULL,
                 date DATETIME NOT NULL,
@@ -64,7 +64,6 @@ class Article extends Entity
                 'id' => $this->id
             ));
         }
-        
     }
 
     public function remove()
@@ -128,64 +127,64 @@ class Article extends Entity
         }
     }
 
-    public function setId($id)
-    {
-        $this->id = $id;
+        public function setId($id)
+        {
+            $this->id = $id;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    public function getId()
-    {
-        return $this->id;
-    }
+        public function getId()
+        {
+            return $this->id;
+        }
 
-    public function setTitle($title)
-    {
-        $this->title = $title;
+        public function setTitle($title)
+        {
+            $this->title = $title;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    public function getTitle()
-    {
-        return $this->title;
-    }
+        public function getTitle()
+        {
+            return $this->title;
+        }
 
-    public function setContent($content)
-    {
-        $this->content = $content;
+        public function setContent($content)
+        {
+            $this->content = $content;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    public function getContent()
-    {
-        return $this->content;
-    }
+        public function getContent()
+        {
+            return $this->content;
+        }
 
-    public function setAuthor($author)
-    {
-        $this->author = $author;
+        public function setAuthor($author)
+        {
+            $this->author = $author;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    public function getAuthor()
-    {
-        return $this->author;
-    }
+        public function getAuthor()
+        {
+            return $this->author;
+        }
 
-    public function setDate($date)
-    {
-        $this->date = $date;
+        public function setDate($date)
+        {
+            $this->date = $date;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    public function getDate()
-    {
-        return $this->date;
-    }
+        public function getDate()
+        {
+            return $this->date;
+        }
 } 
 
