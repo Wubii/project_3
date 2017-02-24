@@ -8,7 +8,7 @@ class TestController extends Controller
 	{
 		// echo $this->twig->load('MyTemplate.html.twig')->render(array("tata"=> $toto));
 
-		echo "TestController testAction";
+		echo "TestController </br> testAction";
 	}
 }
 
