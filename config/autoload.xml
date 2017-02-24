@@ -1,8 +1,0 @@
-<?xml version='1.0' standalone='yes'?>
-<paths>
-	<path>model</path>
-	<path>controller</path>
-    <path>lib/Twig/lib/Twig</path>
-    <path>lib/PHPRouter</path>
-    <path>lib/Fig</path>
-</paths>

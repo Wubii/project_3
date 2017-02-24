@@ -6,6 +6,6 @@ class Controller1
 	{
 		$model1 = new Model1();
 
-		echo "controller1 </br>" . $model1->toString();
+		echo "Cette URL appelle le Controller1 et la fonction toStringAction() qui affiche le contenu de l'objet model1 : <b>" . $model1->toString() . "</b>";
 	}
 }
