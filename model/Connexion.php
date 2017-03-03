@@ -5,7 +5,7 @@
 class Connexion
 {
     // Initialisation des variables globales
-
+    //mettre dans un variable
     private static $connexion = null;
 
     private $pdo = null;

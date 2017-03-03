@@ -7,35 +7,38 @@ class Comment extends Entity
     private $content = null;
     private $pseudo = null;
     private $date = null;
+    private $articleId = 0;
 
     private $stmtCreate = null;
     private $stmtUpdate = null;
     private $stmtRemove = null;
 
     // A chaque "new Comment" on verifie que la table existe bien
-    function __construct() 
+    function __construct($articleId) 
     {
         // initialisation de la date
         $this->date = new DateTime("now");
+        $this->articleId = $articleId;
 
         // Creation de la table
         if(Connexion::getConnexion()->tableExist('mb_comment') == false)
         {
-            // cree la table article si elle n'existe pas
+            // cree la table comment si elle n'existe pas
             $sql = 'CREATE TABLE IF NOT EXISTS mb_comment (
                 id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 title VARCHAR(255) NOT NULL,
                 content TEXT NOT NULL,
                 pseudo VARCHAR(40) NOT NULL,
                 date DATETIME NOT NULL,
-                PRIMARY KEY (id))';
+                articleId SMALLINT UNSIGNED NOT NULL,
+                PRIMARY KEY (id),
+                FOREIGN KEY (articleId) REFERENCES mb_article(id))';
 
             Connexion::getConnexion()->exec($sql);
-            //echo "Table mb_article created successfully </br>";
         }
 
         // CREATE new comment
-        $this->stmtCreate = Connexion::getConnexion()->getPdo()->prepare("INSERT INTO mb_comment (title, content, pseudo, date) VALUES (:title, :content, :pseudo, :date)");
+        $this->stmtCreate = Connexion::getConnexion()->getPdo()->prepare("INSERT INTO mb_comment (title, content, pseudo, date, articleId) VALUES (:title, :content, :pseudo, :date, :articleId)");
         
         // UPDATE comment
         $this->stmtUpdate = Connexion::getConnexion()->getPdo()->prepare("UPDATE mb_comment SET title = :title, content = :content, pseudo = :pseudo, date = :date WHERE id = :id");
@@ -50,6 +53,7 @@ class Comment extends Entity
                 'content' => $this->content,
                 'pseudo' => $this->pseudo,
                 'date' => $this->date->format("Y-m-d H:i:s"),
+                'articleId' => $this->articleId
             ));
 
             $this->id = Connexion::getConnexion()->getPdo()->lastInsertId();
@@ -66,21 +70,23 @@ class Comment extends Entity
         }
     }
 
-    public static function findAll()
+    public static function findAllByArticle($article)
     {
         $comments = array();
 
-        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment");
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment INNER JOIN mb_article WHERE mb_comment.articleId = " . $article->getId());
+
 
         while($data = $response->fetch())
         {
-            $comment = new Comment();
+            $comment = new Comment($article->getId());
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
             $comment->setContent($data['content']);
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
+            $comment->setArticleId($data['articleId']);
 
             array_push($comments, $comment);
         }
@@ -104,6 +110,7 @@ class Comment extends Entity
             $comment->setContent($dataArray[0]['content']);
             $comment->setPseudo($dataArray[0]['pseudo']);
             $comment->setDate(new DateTime($dataArray[0]['date']));
+            $comment->setArticleId($data['articleId']);
 
             return $comment;
         }
@@ -185,5 +192,17 @@ class Comment extends Entity
     public function getDate()
     {
         return $this->date;
+    }
+
+    public function setArticleId($articleId)
+    {
+        $this->articleId = $articleId;
+
+        return $this;
+    }
+
+    public function getArticleId()
+    {
+        return $this->articleId;
     }
 }

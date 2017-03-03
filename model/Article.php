@@ -8,16 +8,15 @@ class Article extends Entity
     private $author = "Jean FORTEROCHE";
     private $date = null;
 
+    private $comments = array();
+    private $newComments = array();
+
     private $stmtCreate = null;
     private $stmtUpdate = null;
     private $stmtRemove = null;
 
-    // A chaque "new Article" on verifie que la table existe bien
-    function __construct() 
+    private static function tableCreate()
     {
-        // initialisation de la date
-        $this->date = new DateTime("now");
-
         // Creation de la table
         if(Connexion::getConnexion()->tableExist('mb_article') == false)
         {
@@ -33,37 +32,71 @@ class Article extends Entity
             Connexion::getConnexion()->exec($sql);
             //echo "Table mb_article created successfully </br>";
         }
+    }
 
-        // CREATE new article
-        $this->stmtCreate = Connexion::getConnexion()->getPdo()->prepare("INSERT INTO mb_article (title, content, author, date) VALUES (:title, :content, :author, :date)");
+    // A chaque "new Article" on verifie que la table existe bien
+    function __construct() 
+    {
+        // initialisation de la date
+        $this->date = new DateTime("now");
+
+        self::tableCreate();
         
-        // UPDATE article
-        $this->stmtUpdate = Connexion::getConnexion()->getPdo()->prepare("UPDATE mb_article SET title = :title, content = :content, author = :author, date = :date WHERE id = :id");
+    }
+
+    public function addComment($comment)
+    {
+        array_push($this->newComments, $comment);
+    }
+
+    public function removeComment($comment)
+    {
+
     }
 
     public function persist()
     {
         if($this->id == 0)
         {
-            $this->stmtCreate->execute(array(
-                'title' => $this->title,
-                'content' => $this->content,
-                'author' => $this->author,
-                'date' => $this->date->format("Y-m-d H:i:s")
-            ));
+            
+            Connexion::getConnexion()->getPdo()->exec(
+                "INSERT INTO mb_article (title, content, author, date) VALUES ('" . 
+                $this->title . "','" . 
+                $this->content . "','" . 
+                $this->author . "','" . 
+                $this->date->format("Y-m-d H:i:s") . 
+                "')"
+            );
 
             $this->id = Connexion::getConnexion()->getPdo()->lastInsertId();
         }
         else
         {
-            $this->stmtUpdate->execute(array(
-                'title' => $this->title,
-                'content' => $this->content,
-                'author' => $this->author,
-                'date' => $this->date->format("Y-m-d H:i:s"),
-                'id' => $this->id
-            ));
+
+            Connexion::getConnexion()->getPdo()->exec(
+                "UPDATE mb_article SET title = '" . $this->title . 
+                "', content = '" . $this->content . 
+                "', author = '" . $this->author . 
+                "', date = '" . $this->date->format("Y-m-d H:i:s") . 
+                "' WHERE id = " . $this->id
+            );
         }
+
+        // // Évite de réenregistrer les commentqires déjà existants.
+        // foreach($this->newComments as $comment)
+        // {
+        //     // requête qui ajoute dans la table de jointure l'id du commentaire
+        //     Connexion::getConnexion()->getPdo()->exec(
+        //         "INSERT INTO mb_article_comment (article_id, comment_id) VALUE ('" .
+        //         $this->id . "', '" . 
+        //         $comment->getId() . "')"
+        //     );
+
+        //     // Ajoute le commentaire dans la liste des commentaires liés à un article
+        //     array_push($this->comments, $comment);
+        // }
+
+        $newComments = array();
     }
 
     public function remove()
@@ -82,6 +115,8 @@ class Article extends Entity
 
     public static function findAll()
     {
+        self::tableCreate();
+
         $articles = array();
 
         $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article");
@@ -106,9 +141,12 @@ class Article extends Entity
 
     public static function findById($id)
     {
+        self::tableCreate();
+
         $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article WHERE id=" . $id);
         
         $dataArray = $response->fetchAll();
+
         if(empty($dataArray) == false)
         {
             $article = new Article();
@@ -185,6 +223,11 @@ class Article extends Entity
         public function getDate()
         {
             return $this->date;
+        }
+
+        public function getComments()
+        {
+            return Comment::findAllByArticle($this);
         }
 } 
 
