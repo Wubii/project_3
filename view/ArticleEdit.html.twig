@@ -1,0 +1,22 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+
+  <form action="/article/edit" method="post">
+    <input type="hidden" name="id" value="{{ article.id }}">
+    Author : 
+    </br>
+    <input type="text" name="author" value="{{ article.author }}">
+    </br>
+    Titre : 
+    </br>
+    <input type="text" name="title" value="{{ article.title }}">
+    </br>
+    Article : 
+    </br>
+    <textarea name="content" rows="4" cols="50">{{ article.content }}</textarea>
+    </br>
+    <input type="submit" value="Submit">
+  </form> 
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+toto
+  <form action="/comment/edit" method="post">
+    <input type="hidden" name="id" value="{{ comment.id }}">
+    Pseudo : 
+    </br>
+    <input type="text" name="pseudo" value="{{ comment.pseudo }}">
+    </br>
+    Titre : 
+    </br>
+    <input type="text" name="title" value="{{ comment.title }}">
+    </br>
+    Commentaire : 
+    </br>
+    <textarea name="content" rows="4" cols="50">{{ comment.content }}</textarea>
+    </br>
+    <input type="submit" value="Submit">
+  </form> 
+
+{% endblock %}

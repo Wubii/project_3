@@ -1,0 +1,27 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+
+  <!-- <button class="btn btn-primary">TOTO</button> -->
+
+  <form action="/article/add" method="post">
+    Author : 
+    </br>
+    <input type="text" name="author">
+    </br>
+    Titre : 
+    </br>
+    <input type="text" name="title">
+    </br>
+    Article : 
+    </br>
+    <textarea name="content" rows="4" cols="50"></textarea>
+    <!-- <input class="ckeditor" type="textarea" name="content">-->
+    </br> 
+    </br> 
+    <input type="submit" value="Submit">
+  </form> 
+
+  <!-- <textarea class="ckeditor"></textarea> -->
+
+{% endblock %}
