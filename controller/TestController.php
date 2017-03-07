@@ -4,9 +4,8 @@ class TestController extends Controller
 {
 	function testAction()
 	{
-		$toto = "tatadam !";
-		
-		echo self::$twig->load('MyTemplate.html.twig')->render(array("tata"=> $toto));
+		$article = Article::findById(1);
+		Comment::findAllByArticle($article);
 	}
 }
 
