@@ -1,11 +1,10 @@
 <?php
 
-class TestController extends Controller
+class DashboardController extends Controller
 {
-	function testAction()
+	function dashboardShowAction()
 	{
-		$article = Article::findById(1);
-		Comment::findAllByArticle($article);
+		
 	}
 }
 
