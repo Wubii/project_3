@@ -1,0 +1,41 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+
+  
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+      <div class="container-fluid" id="flex-container">
+        <div class="row">
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/knikRiver.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/bear.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/river.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/boulot.jpg" style="width:100%">
+          </div>
+            <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- /#wrapper -->
+
+{% endblock %}
+    
+{% block javascript %}
+
+	<script>
+	$("#menu-toggle").click(function(e) {
+	    e.preventDefault();
+	    $("#wrapper").toggleClass("toggled");
+	});
+	</script>
+
+{% endblock %}
