@@ -1,0 +1,54 @@
+{% extends "BaseDashboard.html.twig" %}
+
+{% block content %}
+
+
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="jumbotron">
+                <h1>Hello, world!</h1>
+	              <p></p>
+				        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+		          </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>Articles <span class="badge" style="background-color: #00264d; font-size:16px; margin-top:2px">{{ articles | length }}</span><span><a href="article/add" class="btn btn-primary pull-right" role="button"> Add article </a></span></h3>
+              </div>
+              <div class="panel-body">
+                {% for article in articles %}
+                  <h4>{{ article.title }}<small> | {{ article.date | date("m/d/Y") }}</small></h4>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+{% endblock %}
+    
+{% block javascript %}
+
+	<script>
+	$("#menu-toggle").click(function(e) {
+	    e.preventDefault();
+	    $("#wrapper").toggleClass("toggled");
+	});
+
+  tinymce.init({
+    selector: '#article'
+  });
+
+	</script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "BaseDashboard.html.twig" %}
+
+{% block content %}
+
+	<div class="container">
+	  <div class="row">
+	    <div class="panel panel-default" style="margin-top:30px">
+          <div class="panel-body">
+			<a href="comment/add" class="btn btn-primary" role="button"> Add comment </a>
+			{% for comment in comments %} 
+			  <div class="panel panel-default" style="margin-top:30px">
+                <div class="panel-body">
+		          <h3> Title : {{ comment.title }} 
+		            <small> Date : {{ comment.date | date("m/d/Y") }}
+		              <a href="comment/delete?id={{ comment.id }}" style="color:red"> DELETE </a><a href="comment/edit?id={{ comment.id }}" style="color:orange"> EDIT 
+		              </a>
+		            </small>
+		          </h3>
+		          <p> Pseudo : {{ comment.pseudo }} </p>
+		          <p> Commentaire : {{ comment.content }} </p>
+		        </div>
+		      </div>
+		    {% endfor %}
+		  </div>
+		</div>
+      </div>
+    </div>
+
+{% endblock %}
