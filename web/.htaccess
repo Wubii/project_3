@@ -1,6 +1,25 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
+RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png|fonts)$ [NC]
 RewriteCond %{REQUEST_URI} !ckeditor.*$ [NC]
 RewriteRule ^(.*)$ index.php [NC,L]
+
+# Do the regex check against the URI here, if match, set the "require_auth" var
+SetEnvIf Request_URI ^/dashboard require_auth=true
+
+# Auth stuff
+AuthUserFile /Users/smekens/workspace/www/project_3/.htpasswd
+AuthName "Password Protected"
+AuthType Basic
+
+# Setup a deny/allow
+Order Deny,Allow
+# Deny from everyone
+Deny from all
+# except if either of these are satisfied
+Satisfy any
+# 1. a valid authenticated user
+Require valid-user
+# or 2. the "require_auth" var is NOT set
+Allow from env=!require_auth
