@@ -70,6 +70,31 @@ class Comment extends Entity
         }
     }
 
+    public static function findAll()
+    {
+        $comments = array();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment");
+
+
+        while($data = $response->fetch())
+        {
+            $comment = new Comment(0);
+
+            $comment->setId($data['id']);
+            $comment->setTitle($data['title']);
+            $comment->setContent($data['content']);
+            $comment->setPseudo($data['pseudo']);
+            $comment->setDate(new DateTime($data['date']));
+
+            array_push($comments, $comment);
+        }
+
+        $response->closeCursor();
+
+        return $comments;
+    }
+
     public static function findAllByArticle($article)
     {
         $comments = array();

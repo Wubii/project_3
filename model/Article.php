@@ -35,7 +35,7 @@ class Article extends Entity
     }
 
     // A chaque "new Article" on verifie que la table existe bien
-    function __construct() 
+    public function __construct() 
     {
         // initialisation de la date
         $this->date = new DateTime("now");
@@ -56,13 +56,14 @@ class Article extends Entity
 
     public function persist()
     {
+        $pdo = Connexion::getConnexion()->getPdo();
+
         if($this->id == 0)
         {
-            
-            Connexion::getConnexion()->getPdo()->exec(
-                "INSERT INTO mb_article (title, content, author, date) VALUES ('" . 
-                $this->title . "','" . 
-                $this->content . "','" . 
+            $pdo->exec(
+                "INSERT INTO mb_article (title, content, author, date) VALUES (" . 
+                $pdo->quote($this->title) . "," . 
+                $pdo->quote($this->content) . ",'" . 
                 $this->author . "','" . 
                 $this->date->format("Y-m-d H:i:s") . 
                 "')"
@@ -73,28 +74,15 @@ class Article extends Entity
         else
         {
 
-            Connexion::getConnexion()->getPdo()->exec(
-                "UPDATE mb_article SET title = '" . $this->title . 
-                "', content = '" . $this->content . 
-                "', author = '" . $this->author . 
+            $pdo->exec(
+                "UPDATE mb_article SET " .
+                "title = " . $pdo->quote($this->title) . 
+                ", content = " . $pdo->quote($this->content) . 
+                ", author = '" . $this->author . 
                 "', date = '" . $this->date->format("Y-m-d H:i:s") . 
                 "' WHERE id = " . $this->id
             );
         }
-
-        // // Évite de réenregistrer les commentqires déjà existants.
-        // foreach($this->newComments as $comment)
-        // {
-        //     // requête qui ajoute dans la table de jointure l'id du commentaire
-        //     Connexion::getConnexion()->getPdo()->exec(
-        //         "INSERT INTO mb_article_comment (article_id, comment_id) VALUE ('" .
-        //         $this->id . "', '" . 
-        //         $comment->getId() . "')"
-        //     );
-
-        //     // Ajoute le commentaire dans la liste des commentaires liés à un article
-        //     array_push($this->comments, $comment);
-        // }
 
         $newComments = array();
     }

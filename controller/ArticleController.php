@@ -29,7 +29,7 @@ class ArticleController extends Controller
 
 		$article->persist();
 
-		header('Location: /article');
+		header('Location: /dashboard/articles');
 	}
 
 	// Récupère l'id de l'article et affiche le formulaire d'édition

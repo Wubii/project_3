@@ -7,7 +7,7 @@
       <div class="panel panel-default" style="margin-top:30px">
         <div class="panel-body">
 	      <a href="article/add" class="btn btn-primary" role="button"> Add article </a>
-	      {% for article in articles %}
+          {% for article in articles %}
 	        <div class="panel panel-default" style="margin-top:30px">
               <div class="panel-body">
 	            <h3> {{ article.title }} 
@@ -18,7 +18,7 @@
 	              <a href="article/edit?id={{ article.id }}" style="color:orange"> Edit </a>
 	              <a href="comment/add?articleId={{ article.id }}" style="color:blue"> Comment </a>
 	            </small></p>
-	            <p><i> {{ article.content }} </i></p>
+	            <p><i> {{ article.content|raw }} </i></p>
 	            {% for comment in article.comments %}
 	              <div class="panel panel-default" style="margin-top:30px; margin-left:30px">
                     <div class="panel-body">
@@ -32,7 +32,7 @@
                 {% endfor %}
 	          </div>
 	        </div>
-    	  {% endfor %}
+          {% endfor %}
     	</div>
       </div>
     </div>

@@ -8,8 +8,11 @@
     <title>Bootstrap 101 Template</title>
 
     <!-- Bootstrap -->
+    <link href="/css/font-awesome.css" rel="stylesheet">
     <link href="/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+    <link href="/css/custom.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,11 +26,50 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.min.js"></script>
 
-    <script src="/ckeditor/ckeditor.js" type="text/javascript"></script>
-
+    <script src="http://cloud.tinymce.com/stable/tinymce.min.js?apiKey=f4rad3g9gwny15k0iqp1aysmaxox4oh53fyu6p1jf7mvz68g"></script>
   </head>
+
   <body>
+
+    {% block sidebar %}
+
+    
+    <div id="wrapper" class="toggled">
+
+  <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li class="sidebar-brand" style="padding:5px">
+          <a href="#" class="pull-right">
+            <img src="/img/logo/map.png" class="pull-left" style="width:100%">
+          </a>
+        </li>
+        <li>
+          <a href="">Jean FORTEROCHE</a>
+        </li>
+        <li>
+          <a href="/dashboard">Dashboard</a>
+        </li>
+        <li>
+          <a href="/about">Qui suis-je ?</a>
+        </li>
+        <li>
+          <a href="/article">Un billet simple pour l'Alaska</a>
+        </li>
+      </ul>
+    </div>
+
+
+    {% endblock %}
+
     {% block content %}
+
+
+    {% endblock %}
+
+    {% block javascript %}
+
+
     {% endblock %}
 
   </body>

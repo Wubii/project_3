@@ -1,27 +1,61 @@
-{% extends "Base.html.twig" %}
+{% extends "BaseDashboard.html.twig" %}
 
 {% block content %}
 
-  <!-- <button class="btn btn-primary">TOTO</button> -->
+<div id="page-content-wrapper">
+  <div class="container-fluid">
+    <div class="row" style="margin-bottom: 50px">
+      <div class="col-lg-12">
+        <h1> Créer un nouvel article </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <form action="/article/add" method="post">
+              <table class="table table-hover">
+                <tr>
+                  <th style="border-top:white">
+                    Author : 
+                  </th>
+                  <td style="border-top:white">
+                    <input type="text" name="author" size=128>
+                  </td>
+                </tr>
+                <tr>
+                  <th style="vertical-align: middle">
+                    Titre : 
+                  </th>
+                  <td>
+                    <input type="text" name="title" size=128>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <textarea id="article" name="content"></textarea>
+                    <input class="btn btn-primary pull-right" style="margin-top:20px" type="submit" value="Enregistrer">
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  <form action="/article/add" method="post">
-    Author : 
-    </br>
-    <input type="text" name="author">
-    </br>
-    Titre : 
-    </br>
-    <input type="text" name="title">
-    </br>
-    Article : 
-    </br>
-    <textarea name="content" rows="4" cols="50"></textarea>
-    <!-- <input class="ckeditor" type="textarea" name="content">-->
-    </br> 
-    </br> 
-    <input type="submit" value="Submit">
-  </form> 
+{% endblock %}
 
-  <!-- <textarea class="ckeditor"></textarea> -->
+{% block javascript %}
+
+  <script>
+
+  tinymce.init({
+    selector: '#article'
+  });
+
+  </script>
 
 {% endblock %}
