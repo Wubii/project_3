@@ -6,20 +6,20 @@ RewriteCond %{REQUEST_URI} !ckeditor.*$ [NC]
 RewriteRule ^(.*)$ index.php [NC,L]
 
 # Do the regex check against the URI here, if match, set the "require_auth" var
-SetEnvIf Request_URI ^/dashboard require_auth=true
+#SetEnvIf Request_URI ^/dashboard require_auth=true
 
 # Auth stuff
-AuthUserFile /Users/smekens/workspace/www/project_3/.htpasswd
-AuthName "Password Protected"
-AuthType Basic
+#AuthUserFile /Users/smekens/workspace/www/project_3/.htpasswd
+#AuthName "Password Protected"
+#AuthType Basic
 
 # Setup a deny/allow
-Order Deny,Allow
+#Order Deny,Allow
 # Deny from everyone
-Deny from all
+#Deny from all
 # except if either of these are satisfied
-Satisfy any
+#Satisfy any
 # 1. a valid authenticated user
-Require valid-user
+#Require valid-user
 # or 2. the "require_auth" var is NOT set
-Allow from env=!require_auth
+#Allow from env=!require_auth
