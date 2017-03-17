@@ -19,10 +19,12 @@ $routes = array(
 	new Route("/dashboard/article/edit"  , "ArticleController::articleEditSubmitAction"         , RequestMethodInterface::METHOD_POST),
 	new Route("/dashboard/article/delete", "ArticleController::articleDeleteAction"            ),
 
-	new Route("/dashboard/comments"      , "DashboardController::dashboardCommentAlertListAction"),
-	new Route("/dashboard/comment/show"  , "DashboardController::dashboardCommentAlertShowAction"),
+	new Route("/dashboard/comments"         , "DashboardController::dashboardCommentAlertListAction"   ),
+	new Route("/dashboard/comment/show"     , "DashboardController::dashboardCommentAlertShowAction"   ),
 	new Route("/dashboard/comment/publish"  , "DashboardController::dashboardCommentAlertPublishAction"),
-	new Route("/dashboard/comment/delete", "DashboardController::dashboardCommentAlertDeleteAction" ),
+	new Route("/dashboard/comment/delete"   , "DashboardController::dashboardCommentAlertDeleteAction" ),
+	
+	new Route("/dashboard/users", "DashboardController::dashboardUserListAction" ),
 	
 	/* SITE --------------------------------------------------------------*/
 	new Route("/article"               , "ArticleController::articleAction"                  ),

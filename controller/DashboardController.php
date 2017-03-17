@@ -13,6 +13,10 @@ class DashboardController extends Controller
 		));
 	}
 
+	/*---------------------------------------------------------------------*/
+	/* Articles                                                            */
+	/*---------------------------------------------------------------------*/
+
 	function dashboardArticleListAction()
 	{
 		$articles = Article::findAll();
@@ -39,6 +43,10 @@ class DashboardController extends Controller
 			"article"=> $article
 		));
 	}
+
+	/*---------------------------------------------------------------------*/
+	/* Comments                                                            */
+	/*---------------------------------------------------------------------*/
 
 	function dashboardCommentListAction()
 	{
@@ -97,6 +105,20 @@ class DashboardController extends Controller
 
 		header('Location: /dashboard/comments');
 	}
+
+	/*---------------------------------------------------------------------*/
+	/* Users                                                               */
+	/*---------------------------------------------------------------------*/
+
+	function dashboardUserListAction()
+	{
+		$users = Comment::findAll();
+
+		echo self::$twig->load('DashboardUserList.html.twig')->render(array(
+			"users"=> $users
+		));
+	}
+
 }
 
 ?>
