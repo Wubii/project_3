@@ -2,11 +2,74 @@
 body
 {
 	background-color: #e6e6e6;
+	padding-right: 50px;
 }
 
+a:hover {
+	text-decoration:none;
+}
 
-#flex-contaicner
+.text-warning {
+	color: #f0ad4e !important;
+	text-decoration: none;
+}
+
+.text-warning:hover {
+	color: #eb9114 !important;
+}
+
+.text-success {
+	color: #5cb85c !important;
+}
+
+.text-success:hover {
+	color: #367c36 !important;
+}
+
+.text-danger {
+	color: #d9534f !important;
+}
+
+.text-danger:hover {
+	color: #bc2e29 !important;
+}
+
+.text-muted:hover {
+	color: #535a5f !important;
+}
+
+#flex-container
 {
     display: flex;
     flex-wrap: wrap;
+}
+
+.element 
+{
+	padding: 30px;
+}
+
+
+/* Add comment box -------------------------------------------------------*/
+
+#add-comment
+{
+	margin-top: 50px;
+}
+
+#styled 
+{
+	width: 600px;
+	height: 120px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+	background-image: url(bg.gif);
+	background-position: bottom right;
+	background-repeat: no-repeat;
+}
+
+.no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th
+{
+    border-top-width: 0px;
 }

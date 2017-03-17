@@ -11,11 +11,7 @@ class Article extends Entity
     private $comments = array();
     private $newComments = array();
 
-    private $stmtCreate = null;
-    private $stmtUpdate = null;
-    private $stmtRemove = null;
-
-    private static function tableCreate()
+    private static function createTableIfNeeded()
     {
         // Creation de la table
         if(Connexion::getConnexion()->tableExist('mb_article') == false)
@@ -40,7 +36,7 @@ class Article extends Entity
         // initialisation de la date
         $this->date = new DateTime("now");
 
-        self::tableCreate();
+        self::createTableIfNeeded();
         
     }
 
@@ -103,7 +99,7 @@ class Article extends Entity
 
     public static function findAll()
     {
-        self::tableCreate();
+        self::createTableIfNeeded();
 
         $articles = array();
 
@@ -129,7 +125,7 @@ class Article extends Entity
 
     public static function findById($id)
     {
-        self::tableCreate();
+        self::createTableIfNeeded();
 
         $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article WHERE id=" . $id);
         

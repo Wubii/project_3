@@ -1,0 +1,11 @@
+{
+	"id" : {{ comment.id }},
+	"title" : {{ comment.title|json_encode()|raw }},
+	"pseudo" : {{ comment.pseudo|json_encode()|raw }},
+	"content" : {{ comment.content|json_encode()|raw }},	
+	"date" : {{ comment.date|json_encode()|raw }},	
+	"articleId" : {{ comment.articleId }},	
+	"commentId" : {{ comment.commentId }},	
+	"level" : {{ comment.level }},
+	"alert" : {{ comment.alert }}
+}

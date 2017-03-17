@@ -1,0 +1,65 @@
+{% extends "BaseDashboard.html.twig" %}
+
+{% block content %}
+
+	<div class="container">
+	  <div class="row">
+	    <h2> Les commentaires suivants ont été signalés par vos utilisateurs </h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-10">
+          <div class="panel panel-default" style="margin-top:30px">
+            <div class="panel-body">
+              {% for comment in comments %} 
+                {% if comment|length < 1 %}
+                  <p> Pas de commentaires signalés </p>
+                {% endif %}
+                {% if comment.alert == 1 %}
+                  <div class="panel panel-default" style="margin-top:30px">
+                    <div class="panel-body">	              
+		              <a href="comment/show?id={{ comment.id }}">  
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span> Voir
+                      </a>
+                      <h3> Pseudo : {{ comment.pseudo }} </h3>
+                      <h5>Title : {{ comment.title }} </h5>
+		                <small> {{ comment.date | date("m/d/Y") }} </small>
+		              </h3>	
+		            </div>
+		          </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+	    {#<div class="panel panel-default" style="margin-top:30px">
+          <div class="panel-body">
+			<a href="comment/add" class="btn btn-primary" role="button"> Add comment </a>
+			{% for comment in comments %} 
+			  <div class="panel panel-default" style="margin-top:30px">
+                <div class="panel-body">
+		          <h3> Title : {{ comment.title }} 
+		            <small> Date : {{ comment.date | date("m/d/Y") }}
+		              <a href="comment/delete?id={{ comment.id }}" style="color:red"> DELETE </a>
+		            </small>
+		          </h3>
+		          <p> Pseudo : {{ comment.pseudo }} </p>
+		          <p> Commentaire : {{ comment.content }} </p>
+		        </div>
+		      </div>
+		    {% endfor %}
+		  </div>
+		</div>#}

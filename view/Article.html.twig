@@ -1,0 +1,316 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+
+<div class="container" style="padding: 20px">
+  <div class="row">
+    <div class="col-lg-10" style="text-align: justify;">
+      <h3> {{ article.title }} 
+        <small> {{ article.author }} </small>
+	    </h3>
+	    <p><small><i>{{ article.date | date("m/d/Y") }}</i></small></p>
+	    <p><i> {{ article.content|raw }} </i></p>
+    </div>
+  </div>
+  <div id="add-comment" class="row">
+    <div class="col-lg-offset-1 col-lg-6">
+      <h4>Laissez un commentaire : </h4>
+      <form action="/comment/add-to-article" method="post">
+        <input type="hidden" name="articleId" value="{{ article.id }}">
+        <table class="table no-border">
+          <tr>
+            <td>
+              <input placeholder="Pseudo" type="text" name="pseudo">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input placeholder="Titre" type="text" name="title">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <textarea id="styled" name="content" placeholder="Votre message..."></textarea>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input class="pull-right btn btn-success btn-sm" type="submit" value="Valider">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-9">
+	    {% for comment1 in article.comments %}
+        {% if comment1.alert == 0 %}
+	      <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+          <div class="panel-body">
+            <h5>{{ comment1.pseudo }}</h5>
+            <h5> {{ comment1.title }} 
+	            <small>  {{ comment1.date | date("m/d/Y") }} </small>
+              <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment1.id }}"><small class="text-warning"> Modifier </small></a>
+              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment1.id }}"><small class="text-danger"> Supprimer </small></a>
+	          </h5>
+	     		  <p><i> {{ comment1.content|raw }} </i></p>
+            <p> 
+              <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment1.id }}"><small class="text-success"> Repondre </small></a>
+              <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment1.id }}"><small> Signaler </small></a>
+            </p>
+            <div>
+              {% for comment2 in comment1.comments %}
+                {% if comment2.alert == 0 %}
+                <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                  <div class="panel-body">
+                    <h5> {{ comment2.pseudo }}
+                      <small> {{ comment2.date | date("m/d/Y") }}</small>
+                      <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment2.id }}"><small class="text-warning"> Modifier </small></a>
+                      <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment2.id }}"><small class="text-danger"> Supprimer </small></a>
+                    </h5>
+                    <p><i> {{ comment2.content|raw }} </i></p>
+                    <p> 
+                      <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment2.id }}"><small class="text-success"> Repondre </small></a>
+                      <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment2.id }}"><small> Signaler </small></a>
+                    </p>
+                    <div>
+                      {% for comment3 in comment2.comments %}
+                        {% if comment3.alert == 0 %}
+                        <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                          <div class="panel-body">
+                            <h5> {{ comment3.pseudo }}
+                              <small> {{ comment3.date | date("m/d/Y") }} </small>
+                              <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment3.id }}"><small class="text-warning"> Modifier </small></a>
+                              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment3.id }}"><small class="text-danger"> Supprimer </small></a>
+                            </h5>
+                            <p><i> {{ comment3.content|raw }} </i></p>
+                            <p> 
+                              <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment3.id }}"><small> Signaler </small></a>
+                            </p>
+                          </div>
+                        </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCommentAdd" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">New message</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input id="modalCommentAddPseudo" type="text" placeholder="Pseudo" name="pseudo">
+          </br>
+          </br>
+          <textarea id="modalCommentAddContent" class="styled" placeholder="Votre message..." name="content" rows="4" cols="50"></textarea>
+        </form> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button id="modalCommentAddSubmit" type="button" class="btn btn-success">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCommentEdit" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Modifier votre commentaire</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input id="modalCommentEditTitle" class="hidden" placeholder="Titre" type="text" name="title">
+          </br>
+          <input id="modalCommentEditPseudo" type="text" placeholder="Pseudo" name="pseudo">
+          </br>
+          </br>
+          <textarea id="modalCommentEditContent" class="styled" placeholder="Votre message..." name="content" rows="4" cols="50"></textarea>
+        </form> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button id="modalCommentEditSubmit" type="button" class="btn btn-warning">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCommentAlert" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Signaler ce commentaire</h4>
+      </div>
+      <div class="modal-body">
+        <div id="modalCommentAlertMessage" class="hidden alert alert-danger" role="alert">Cochez la case pour valider</div>
+        <form>
+          <input id="modalCommentAlertCheckbox" type="checkbox" name="alert"> Etes-vous sur de vouloir signaler ce commentaire ?
+        </form> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button id="modalCommentAlertSubmit" type="button" class="btn btn-danger">Signaler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalCommentDelete" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Supprimer le commentaire</h4>
+      </div>
+      <div class="modal-body">
+        <p> Etes-vous sur de vouloir supprimer votre commentaire ? </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button id="modalCommentDeleteSubmit" type="button" class="btn btn-danger">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+	       
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+  var commentId;
+
+  /*-----------------------------------------------------------------------*/
+  /* Add comment                                                           */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentAdd').on('show.bs.modal', function (event) 
+  {
+      var button = $(event.relatedTarget)
+      commentId = button.data('comment-id');
+      $('#modalCommentAddPseudo').innerHTML = ""; 
+      $('#modalCommentAddContent').innerHTML = ""; 
+  });
+
+  $('#modalCommentAddSubmit').on('click', function () 
+  {
+      var pseudo = $('#modalCommentAddPseudo').val();
+      var content = $('#modalCommentAddContent').val();
+
+      $.post( "/comment/add-to-comment", { commentId: commentId, pseudo: pseudo, content: content })
+      .done(function( data ) 
+      {
+          window.location.replace("/article?id=" + {{ article.id }});
+      });
+  });
+
+  /*-----------------------------------------------------------------------*/
+  /* Edit comment                                                          */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentEdit').on('show.bs.modal', function (event) 
+  {
+      var button = $(event.relatedTarget);
+      var commentId = button.data('comment-id');
+    
+      $.get( "/comment?id=" + commentId, function( data ) 
+      {
+          var comment = jQuery.parseJSON(data);
+
+          $('#modalCommentEditTitle').val(comment.title);
+          $('#modalCommentEditPseudo').val(comment.pseudo);
+          $('#modalCommentEditContent').val(comment.content);
+
+          if(comment.level == 1)
+          {
+              $('#modalCommentEditTitle').removeClass("hidden");
+          }
+          else{
+              $('#modalCommentEditTitle').addClass("hidden");
+          }
+
+      });
+
+      $('#modalCommentEditSubmit').on('click', function ()
+      {
+          var title = $('#modalCommentEditTitle').val();
+          var content = $('#modalCommentEditContent').val();
+
+          $.post( "/comment/edit", { id: commentId, title: title, content: content })
+          .done(function( data ) 
+          {
+              window.location.replace("/article?id=" + {{ article.id }});
+          });
+      });
+  });
+
+  /*-----------------------------------------------------------------------*/
+  /* Alert comment                                                         */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentAlert').on('show.bs.modal', function (event) 
+  {
+      $('#modalCommentAlertMessage').addClass("hidden");
+      
+      var button = $(event.relatedTarget);
+      commentId = button.data('comment-id');
+  })
+
+  $('#modalCommentAlertSubmit').on('click', function ()
+  {
+      if($('#modalCommentAlertCheckbox').is(":checked"))
+      {
+          $.post( "/comment/alert", { id: commentId })
+          .done(function( data ) 
+          {
+              window.location.replace("/article?id=" + {{ article.id }});
+          });
+      }
+      else {
+        $('#modalCommentAlertMessage').removeClass("hidden");
+      }
+  })
+
+  /*-----------------------------------------------------------------------*/
+  /* Delete comment                                                        */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentDelete').on('show.bs.modal', function (event) 
+  {
+      var button = $(event.relatedTarget);
+      commentId = button.data('comment-id');
+  })
+
+  $('#modalCommentDeleteSubmit').on('click', function ()
+  {
+      $.post( "/comment/delete", { id: commentId })
+      .done(function( data ) 
+      {
+          window.location.replace("/article?id=" + {{ article.id }});
+      });
+  });
+
+
+</script>
+
+{% endblock %}

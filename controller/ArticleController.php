@@ -19,11 +19,11 @@ class ArticleController extends Controller
 	}
 
 	// Enregistre le nouvel article
-	public function articleAddSubmitAction($author, $title, $content)
+	public function articleAddSubmitAction($title, $content)
 	{
 		$article = new Article();
 
-		$article->setAuthor($author);
+		$article->setAuthor("Jean Forteroche");
 		$article->setTitle($title);
 		$article->setContent($content);
 
@@ -37,24 +37,24 @@ class ArticleController extends Controller
 	{
 		$article = Article::findById($id);
 		
-		echo self::$twig->load('ArticleEdit.html.twig')->render(array(
+		echo self::$twig->load('DashboardArticleEdit.html.twig')->render(array(
 			"article" => $article
 		));
 	}
 
 	// Enregistre les modification de l'article
-	public function articleEditSubmitAction($id, $author, $title, $content)
+	public function articleEditSubmitAction($id, $title, $content)
 	{
 		$article = Article::findById($id);
 
 		$article->setDate(new DateTime("now"));
-		$article->setAuthor($author);
+		$article->setAuthor("Jean Forteroche");
 		$article->setTitle($title);
 		$article->setContent($content);
 
 		$article->persist();
 
-		header('Location: /article');
+		header('Location: /dashboard/articles');
 	}
 
 	// Suppression d'un article
@@ -67,6 +67,24 @@ class ArticleController extends Controller
 			$article->remove();
 		}
 
-		header('Location: /article');
+		header('Location: /dashboard/articles');
+	}
+
+	public function articleAction($id)
+	{
+		$article = Article::findById($id);
+		echo self::$twig->load('Article.html.twig')->render(array(
+			"article"=> $article
+		));
 	}
 }
+
+
+
+
+
+
+
+
+
+

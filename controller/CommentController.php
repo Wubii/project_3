@@ -2,12 +2,13 @@
 
 class CommentController extends Controller
 {
-	public function commentListAction()
+	public function commentListAction($id)
 	{
-		$comments = Comment::findAll();
+		$comment = Comment::findById($id);
 
-		echo self::$twig->load('CommentList.html.twig')->render(array(
-			"comments"=> $comments
+
+		echo self::$twig->load('Comment.json.twig')->render(array(
+			"comment"=> $comment
 		));
 	}
 
@@ -18,13 +19,14 @@ class CommentController extends Controller
 		));
 	}
 
-	public function commentAddSubmitAction($articleId, $pseudo, $title, $content)
+	public function commentAddToArticleSubmitAction($articleId, $pseudo, $title, $content)
 	{
 		$comment = new Comment($articleId);
 
 		$comment->setPseudo($pseudo);
 		$comment->setTitle($title);
 		$comment->setContent($content);
+		$comment->setLevel(1);
 
 		$comment->persist();
 
@@ -33,7 +35,20 @@ class CommentController extends Controller
 
 		$article->persist();
 
-		header('Location: /article');
+		header('Location: /article?id=' . $articleId);
+	}
+
+	public function commentAddToCommentSubmitAction($commentId, $pseudo, $content)
+	{
+		$parent = Comment::findById($commentId);
+
+		$comment = new Comment(0, $commentId);
+
+		$comment->setPseudo($pseudo);
+		$comment->setContent($content);
+		$comment->setLevel($parent->getLevel() + 1);		
+
+		$comment->persist();
 	}
 
 	public function commentEditAction($id)
@@ -45,18 +60,26 @@ class CommentController extends Controller
 		));
 	}
 
-	public function commentEditSubmitAction($id, $pseudo, $title, $content)
+	public function commentEditSubmitAction($id, $title, $content)
 	{
 		$comment = Comment::findById($id);
 
 		$comment->setDate(new DateTime("now"));
-		$comment->setPseudo($pseudo);
 		$comment->setTitle($title);
 		$comment->setContent($content);
 
 		$comment->persist();
+	}
 
-		header('Location: /comment');
+	public function commentAlertAction($id)
+	{
+		$comment = Comment::findById($id);
+
+		if(!is_null($comment))
+		{
+			$comment->setAlert(1);
+			$comment->persist();
+		}
 	}
 
 	public function commentDeleteAction($id)
@@ -67,7 +90,5 @@ class CommentController extends Controller
 		{
 			$comment->remove();
 		}
-
-		header('Location: /comment');
 	}
 }

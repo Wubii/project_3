@@ -8,19 +8,12 @@ class Comment extends Entity
     private $pseudo = null;
     private $date = null;
     private $articleId = 0;
+    private $commentId = 0;
+    private $level = 0;
+    private $alert = 0;
 
-    private $stmtCreate = null;
-    private $stmtUpdate = null;
-    private $stmtRemove = null;
-
-    // A chaque "new Comment" on verifie que la table existe bien
-    function __construct($articleId) 
+    private static function createTableIfNeeded()
     {
-        // initialisation de la date
-        $this->date = new DateTime("now");
-        $this->articleId = $articleId;
-
-        // Creation de la table
         if(Connexion::getConnexion()->tableExist('mb_comment') == false)
         {
             // cree la table comment si elle n'existe pas
@@ -30,48 +23,73 @@ class Comment extends Entity
                 content TEXT NOT NULL,
                 pseudo VARCHAR(40) NOT NULL,
                 date DATETIME NOT NULL,
-                articleId SMALLINT UNSIGNED NOT NULL,
-                PRIMARY KEY (id),
-                FOREIGN KEY (articleId) REFERENCES mb_article(id))';
+                articleId SMALLINT UNSIGNED,
+                commentId SMALLINT UNSIGNED,
+                level SMALLINT UNSIGNED,
+                alert TINYINT UNSIGNED,
+                PRIMARY KEY (id))';
 
             Connexion::getConnexion()->exec($sql);
         }
+    }
 
-        // CREATE new comment
-        $this->stmtCreate = Connexion::getConnexion()->getPdo()->prepare("INSERT INTO mb_comment (title, content, pseudo, date, articleId) VALUES (:title, :content, :pseudo, :date, :articleId)");
+    // A chaque "new Comment" on verifie que la table existe bien
+    function __construct($articleId = 0, $commentId = 0, $level = 1) 
+    {
+        // initialisation de la date
+        $this->date = new DateTime("now");
+        $this->articleId = $articleId;
+        $this->commentId = $commentId;
+        $this->level = $level;
+
+        // Creation de la table
+        self::createTableIfNeeded();
         
-        // UPDATE comment
-        $this->stmtUpdate = Connexion::getConnexion()->getPdo()->prepare("UPDATE mb_comment SET title = :title, content = :content, pseudo = :pseudo, date = :date WHERE id = :id");
     }
 
     public function persist()
     {
+        $pdo = Connexion::getConnexion()->getPdo();
+
     	if($this->id == 0)
         {
-            $this->stmtCreate->execute(array(
-                'title' => $this->title,
-                'content' => $this->content,
-                'pseudo' => $this->pseudo,
-                'date' => $this->date->format("Y-m-d H:i:s"),
-                'articleId' => $this->articleId
-            ));
+            $pdo->exec(
+                "INSERT INTO mb_comment (title, content, pseudo, date, articleId, commentId, level, alert) VALUES (" . 
+                $pdo->quote($this->title) . "," . 
+                $pdo->quote($this->content) . ",'" . 
+                $this->pseudo . "','" . 
+                $this->date->format("Y-m-d H:i:s") . "'," . 
+                $this->articleId . "," .
+                $this->commentId . "," .
+                $this->level . "," .
+                $this->alert . 
+                ")"
+            );
 
             $this->id = Connexion::getConnexion()->getPdo()->lastInsertId();
         }
         else
         {
-            $this->stmtUpdate->execute(array(
-                'title' => $this->title,
-                'content' => $this->content,
-                'pseudo' => $this->pseudo,
-                'date' => $this->date->format("Y-m-d H:i:s"),
-                'id' => $this->id
-            ));
+            $pdo->exec(
+                "UPDATE mb_comment SET " .
+                "title = " . $pdo->quote($this->title) . 
+                ", content = " . $pdo->quote($this->content) . 
+                ", pseudo = '" . $this->pseudo . "'" .
+                ", date = '" . $this->date->format("Y-m-d H:i:s") . "'" .
+                ", articleId = " . $this->articleId .
+                ", commentId = " . $this->commentId .
+                ", level = " . $this->level .
+                ", alert = " . $this->alert .
+                " WHERE id = " . $this->id
+            );
         }
     }
 
     public static function findAll()
-    {
+    { 
+        // Creation de la table
+        self::createTableIfNeeded();
+
         $comments = array();
 
         $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment");
@@ -79,32 +97,7 @@ class Comment extends Entity
 
         while($data = $response->fetch())
         {
-            $comment = new Comment(0);
-
-            $comment->setId($data['id']);
-            $comment->setTitle($data['title']);
-            $comment->setContent($data['content']);
-            $comment->setPseudo($data['pseudo']);
-            $comment->setDate(new DateTime($data['date']));
-
-            array_push($comments, $comment);
-        }
-
-        $response->closeCursor();
-
-        return $comments;
-    }
-
-    public static function findAllByArticle($article)
-    {
-        $comments = array();
-
-        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment INNER JOIN mb_article WHERE mb_comment.articleId = " . $article->getId());
-
-
-        while($data = $response->fetch())
-        {
-            $comment = new Comment($article->getId());
+            $comment = new Comment();
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
@@ -112,6 +105,9 @@ class Comment extends Entity
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
             $comment->setArticleId($data['articleId']);
+            $comment->setCommentId($data['commentId']);
+            $comment->setLevel($data['level']);
+            $comment->setAlert($data['alert']);
 
             array_push($comments, $comment);
         }
@@ -123,6 +119,9 @@ class Comment extends Entity
 
     public static function findById($id)
     {
+        // Creation de la table
+        self::createTableIfNeeded();
+
         $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE id=" . $id);
         
         $dataArray = $response->fetchAll();
@@ -135,7 +134,10 @@ class Comment extends Entity
             $comment->setContent($dataArray[0]['content']);
             $comment->setPseudo($dataArray[0]['pseudo']);
             $comment->setDate(new DateTime($dataArray[0]['date']));
-            $comment->setArticleId($data['articleId']);
+            $comment->setArticleId($dataArray[0]['articleId']);
+            $comment->setCommentId($dataArray[0]['commentId']);
+            $comment->setLevel($dataArray[0]['level']);
+            $comment->setAlert($dataArray[0]['alert']);
 
             return $comment;
         }
@@ -145,8 +147,109 @@ class Comment extends Entity
         }
     }
 
+    public static function findAllByArticle($article)
+    {
+        // Creation de la table
+        self::createTableIfNeeded();
+
+        $comments = array();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE articleId = " . $article->getId());
+
+        while($data = $response->fetch())
+        {
+            $comment = new Comment();
+
+            $comment->setId($data['id']);
+            $comment->setTitle($data['title']);
+            $comment->setContent($data['content']);
+            $comment->setPseudo($data['pseudo']);
+            $comment->setDate(new DateTime($data['date']));
+            $comment->setArticleId($data['articleId']);
+            $comment->setCommentId($data['commentId']);
+            $comment->setLevel($data['level']);
+            $comment->setAlert($data['alert']);
+
+            array_push($comments, $comment);
+        }
+
+        $response->closeCursor();
+
+        return $comments;
+    }
+
+    public static function findAllByAlert()
+    {
+        // Creation de la table
+        self::createTableIfNeeded();
+
+        $comments = array();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE alert = 1 ");
+
+        while($data = $response->fetch())
+        {
+            $comment = new Comment();
+
+            $comment->setId($data['id']);
+            $comment->setTitle($data['title']);
+            $comment->setContent($data['content']);
+            $comment->setPseudo($data['pseudo']);
+            $comment->setDate(new DateTime($data['date']));
+            $comment->setArticleId($data['articleId']);
+            $comment->setCommentId($data['commentId']);
+            $comment->setLevel($data['level']);
+            $comment->setAlert($data['alert']);
+
+            array_push($comments, $comment);
+        }
+
+        $response->closeCursor();
+
+        return $comments;
+    }
+
+    public static function findAllByComment($comment)
+    {
+        // Creation de la table
+        self::createTableIfNeeded();
+
+        $comments = array();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE commentId = " . $comment->getId());
+
+        while($data = $response->fetch())
+        {
+            $comment = new Comment();
+
+            $comment->setId($data['id']);
+            $comment->setTitle($data['title']);
+            $comment->setContent($data['content']);
+            $comment->setPseudo($data['pseudo']);
+            $comment->setDate(new DateTime($data['date']));
+            $comment->setArticleId($data['articleId']);
+            $comment->setCommentId($data['commentId']);
+            $comment->setLevel($data['level']);
+            $comment->setAlert($data['alert']);
+
+            array_push($comments, $comment);
+        }
+
+        $response->closeCursor();
+
+        return $comments;
+    }
+
     public function remove()
     {
+        $comments = $this->getComments();
+
+        foreach ($comments as $comment) 
+        {
+            // Fonction recursive : on appelle le remove depuis le remove sur un objet different : les enfants du commentaire
+            $comment->remove();
+        }
+
     	try
         {
             Connexion::getConnexion()->getPdo()->exec("DELETE FROM mb_comment WHERE id=" . $this->id);
@@ -229,5 +332,46 @@ class Comment extends Entity
     public function getArticleId()
     {
         return $this->articleId;
+    }
+
+    public function setCommentId($commentId)
+    {
+        $this->commentId = $commentId;
+
+        return $this;
+    }
+
+    public function getCommentId()
+    {
+        return $this->commentId;
+    }
+
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    public function setAlert($alert)
+    {
+        $this->alert = $alert;
+
+        return $this;
+    }
+
+    public function getAlert()
+    {
+        return $this->alert;
+    }
+
+    public function getComments()
+    {
+        return Comment::findAllByComment($this);
     }
 }
