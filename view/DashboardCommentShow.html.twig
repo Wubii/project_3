@@ -1,0 +1,25 @@
+{% extends "BaseDashboard.html.twig" %}
+
+{% block content %}
+
+	<div class="container">
+	  <div class="row">
+        <div class="col-lg-10">
+          <div class="jumbotron">
+            <h4>Que voulez-vous faire avec ce commentaire ?</h4>
+		      </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10">
+          <h3> {{ comment.pseudo }} 
+            <small> {{ comment.title }} {{ comment.date | date("m/d/Y") }}</small>
+          </h3>
+          <p><i> {{ comment.content }} </i></p>
+          <a href="/dashboard/comment/delete?id={{ comment.id }}" type="button" class="btn btn-xs btn-danger pull-right"> Supprimer </a>
+          <a href="/dashboard/comment/publish?id={{ comment.id }}" type="button" class="btn btn-xs btn-success pull-right" style="margin-right: 5px"> Publier </a>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

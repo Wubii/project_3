@@ -10,29 +10,30 @@ $routes = array(
 	new Route("/", "MyController::homeAction"),
 
 	/* ADMIN -------------------------------------------------------------*/
-	new Route("/dashboard"               , "DashboardController::dashboardShowAction"       ),
-	new Route("/dashboard/articles"      , "DashboardController::dashboardArticleListAction"),
-	new Route("/dashboard/article"       , "DashboardController::dashboardArticleAction"    ),
-	new Route("/dashboard/article/add"   , "ArticleController::articleAddAction"             , RequestMethodInterface::METHOD_GET ),
-	new Route("/dashboard/article/add"   , "ArticleController::articleAddSubmitAction"       , RequestMethodInterface::METHOD_POST),
-	new Route("/dashboard/article/edit"  , "ArticleController::articleEditAction"            , RequestMethodInterface::METHOD_GET ),
-	new Route("/dashboard/article/edit"  , "ArticleController::articleEditSubmitAction"      , RequestMethodInterface::METHOD_POST),
-	new Route("/dashboard/article/delete", "ArticleController::articleDeleteAction"         ),
+	new Route("/dashboard"               , "DashboardController::dashboardShowAction"          ),
+	new Route("/dashboard/articles"      , "DashboardController::dashboardArticleListAction"   ),
+	new Route("/dashboard/article"       , "DashboardController::dashboardArticleAction"       ),
+	new Route("/dashboard/article/add"   , "ArticleController::articleAddAction"                , RequestMethodInterface::METHOD_GET ),
+	new Route("/dashboard/article/add"   , "ArticleController::articleAddSubmitAction"          , RequestMethodInterface::METHOD_POST),
+	new Route("/dashboard/article/edit"  , "ArticleController::articleEditAction"               , RequestMethodInterface::METHOD_GET ),
+	new Route("/dashboard/article/edit"  , "ArticleController::articleEditSubmitAction"         , RequestMethodInterface::METHOD_POST),
+	new Route("/dashboard/article/delete", "ArticleController::articleDeleteAction"            ),
 
-
-	new Route("/dashboard/comments"    , "DashboardController::dashboardCommentListAction"),
+	new Route("/dashboard/comments"      , "DashboardController::dashboardCommentAlertListAction"),
+	new Route("/dashboard/comment/show"  , "DashboardController::dashboardCommentAlertShowAction"),
+	new Route("/dashboard/comment/publish"  , "DashboardController::dashboardCommentAlertPublishAction"),
+	new Route("/dashboard/comment/delete", "DashboardController::dashboardCommentAlertDeleteAction" ),
 	
 	/* SITE --------------------------------------------------------------*/
-	new Route("/article"       , "ArticleController::articleAction"         ),
-	new Route("/articles"      , "ArticleController::articleListAction"     ),
-
+	new Route("/article"               , "ArticleController::articleAction"                  ),
+	new Route("/articles"              , "ArticleController::articleListAction"              ),
 
 	new Route("/comment"               , "CommentController::commentListAction"              ),
 	new Route("/comment/add-to-article", "CommentController::commentAddToArticleSubmitAction" , RequestMethodInterface::METHOD_POST),
 	new Route("/comment/add-to-comment", "CommentController::commentAddToCommentSubmitAction" , RequestMethodInterface::METHOD_POST),
 	new Route("/comment/edit"          , "CommentController::commentEditSubmitAction"         , RequestMethodInterface::METHOD_POST),
-	new Route("/comment/alert"         , "CommentController::commentAlertAction"              , RequestMethodInterface::METHOD_POST),
 	new Route("/comment/delete"        , "CommentController::commentDeleteAction"             , RequestMethodInterface::METHOD_POST),
+	new Route("/comment/alert"         , "CommentController::commentAlertAction"              , RequestMethodInterface::METHOD_POST),
 );
 
 $router = new Router($routes);

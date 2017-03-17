@@ -5,7 +5,7 @@ class DashboardController extends Controller
 	function dashboardShowAction()
 	{
 		$articles = Article::findAll();
-		$comments = Comment::findAll();
+		$comments = Comment::findAllByAlert();
 
 		echo self::$twig->load('Dashboard.html.twig')->render(array(
 			"articles" => $articles,
@@ -47,6 +47,55 @@ class DashboardController extends Controller
 		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
 			"comments"=> $comments
 		));
+	}
+
+	function dashboardCommentAction()
+	{
+		$comments = Comment::findAll();
+
+		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
+			"comments"=> $comments
+		));
+	}
+
+	public function dashboardCommentAlertListAction()
+	{
+		$comments = Comment::findAllByAlert();
+
+		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
+			"comments"=> $comments
+		));
+	}
+
+	public function dashboardCommentAlertShowAction($id)
+	{
+		$comment = Comment::findById($id);
+
+		echo self::$twig->load('DashboardCommentShow.html.twig')->render(array(
+			"comment"=> $comment
+		));
+	}
+
+	public function dashboardCommentAlertDeleteAction($id)
+	{
+		$comment = Comment::findById($id);
+
+		if(!is_null($comment))
+		{
+			$comment->remove();
+		}
+
+		header('Location: /dashboard/comments');
+	}
+
+	public function dashboardCommentAlertPublishAction($id)
+	{
+		$comment = Comment::findById($id);
+
+	    $comment->setAlert(0);
+	    $comment->persist();
+
+		header('Location: /dashboard/comments');
 	}
 }
 

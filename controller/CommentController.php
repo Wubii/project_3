@@ -91,4 +91,22 @@ class CommentController extends Controller
 			$comment->remove();
 		}
 	}
+
+	public function dashboardCommentAlertListAction()
+	{
+		$comments = Comment::findAllByAlert();
+
+		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
+			"comments"=> $comments
+		));
+	}
+
+	public function dashboardCommentAlertShowAction($id)
+	{
+		$comment = Comment::findById($id);
+
+		echo self::$twig->load('DashboardCommentShow.html.twig')->render(array(
+			"comment"=> $comment
+		));
+	}
 }
