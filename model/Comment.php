@@ -2,6 +2,8 @@
 
 class Comment extends Entity
 {
+    const LEVEL_MAX = 3;
+
 	private $id = 0;
     private $title = null;
     private $content = null;
@@ -11,6 +13,8 @@ class Comment extends Entity
     private $commentId = 0;
     private $level = 0;
     private $alert = 0;
+
+    private $comments = array();
 
     private static function createTableIfNeeded()
     {
@@ -34,7 +38,7 @@ class Comment extends Entity
     }
 
     // A chaque "new Comment" on verifie que la table existe bien
-    function __construct($articleId = 0, $commentId = 0, $level = 1) 
+    function __construct($articleId, $commentId = 0, $level = 1) 
     {
         // initialisation de la date
         $this->date = new DateTime("now");
@@ -97,16 +101,13 @@ class Comment extends Entity
 
         while($data = $response->fetch())
         {
-            $comment = new Comment();
+            $comment = new Comment($data['articleId'], $data['commentId'], $data['level']);
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
             $comment->setContent($data['content']);
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
-            $comment->setArticleId($data['articleId']);
-            $comment->setCommentId($data['commentId']);
-            $comment->setLevel($data['level']);
             $comment->setAlert($data['alert']);
 
             array_push($comments, $comment);
@@ -127,16 +128,13 @@ class Comment extends Entity
         $dataArray = $response->fetchAll();
         if(empty($dataArray) == false)
         {
-            $comment = new Comment();
+            $comment = new Comment($dataArray[0]['articleId'], $dataArray[0]['commentId'], $dataArray[0]['level']);
 
             $comment->setId($dataArray[0]['id']);
             $comment->setTitle($dataArray[0]['title']);
             $comment->setContent($dataArray[0]['content']);
             $comment->setPseudo($dataArray[0]['pseudo']);
             $comment->setDate(new DateTime($dataArray[0]['date']));
-            $comment->setArticleId($dataArray[0]['articleId']);
-            $comment->setCommentId($dataArray[0]['commentId']);
-            $comment->setLevel($dataArray[0]['level']);
             $comment->setAlert($dataArray[0]['alert']);
 
             return $comment;
@@ -154,26 +152,39 @@ class Comment extends Entity
 
         $comments = array();
 
-        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE articleId = " . $article->getId());
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_comment WHERE articleId = " . $article->getId() . " ORDER BY id DESC");
 
         while($data = $response->fetch())
         {
-            $comment = new Comment();
+            $comment = new Comment($data['articleId'], $data['commentId'], $data['level']);
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
             $comment->setContent($data['content']);
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
-            $comment->setArticleId($data['articleId']);
-            $comment->setCommentId($data['commentId']);
-            $comment->setLevel($data['level']);
             $comment->setAlert($data['alert']);
 
-            array_push($comments, $comment);
+            $comments[$comment->getId()] = $comment;
         }
 
         $response->closeCursor();
+
+        // 1ère boucle level = 3, 2ème boucle level = 2
+        for($level = self::LEVEL_MAX; $level > 1; $level--)
+        {
+            foreach ($comments as $key => $comment) 
+            {
+                if($comment->getLevel() == $level)
+                {
+                    // Ajoute le commentaire à son parent
+                    $comments[$comment->getCommentId()]->addComment($comment);
+
+                    // Supprime cette key du tableau "comments"
+                    unset($comments[$key]);
+                }
+            }
+        }
 
         return $comments;
     }
@@ -189,16 +200,13 @@ class Comment extends Entity
 
         while($data = $response->fetch())
         {
-            $comment = new Comment();
+            $comment = new Comment($data['articleId'], $data['commentId'], $data['level']);
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
             $comment->setContent($data['content']);
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
-            $comment->setArticleId($data['articleId']);
-            $comment->setCommentId($data['commentId']);
-            $comment->setLevel($data['level']);
             $comment->setAlert($data['alert']);
 
             array_push($comments, $comment);
@@ -220,16 +228,13 @@ class Comment extends Entity
 
         while($data = $response->fetch())
         {
-            $comment = new Comment();
+            $comment = new Comment($data['articleId'], $data['commentId'], $data['level']);
 
             $comment->setId($data['id']);
             $comment->setTitle($data['title']);
             $comment->setContent($data['content']);
             $comment->setPseudo($data['pseudo']);
             $comment->setDate(new DateTime($data['date']));
-            $comment->setArticleId($data['articleId']);
-            $comment->setCommentId($data['commentId']);
-            $comment->setLevel($data['level']);
             $comment->setAlert($data['alert']);
 
             array_push($comments, $comment);
@@ -242,7 +247,7 @@ class Comment extends Entity
 
     public function remove()
     {
-        $comments = $this->getComments();
+        $comments = $this->findAllByComment($this);
 
         foreach ($comments as $comment) 
         {
@@ -372,6 +377,13 @@ class Comment extends Entity
 
     public function getComments()
     {
-        return Comment::findAllByComment($this);
+        return $this->comments;
+    }
+
+    public function addComment($comment)
+    {
+        array_push($this->comments, $comment);
+
+        return $this; 
     }
 }

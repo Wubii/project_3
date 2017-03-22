@@ -207,9 +207,4 @@ class User extends Entity
     {
         return $this->locked;
     }
-
-    public function getUsers()
-    {
-        return User::findAll($this);
-    }
 }
