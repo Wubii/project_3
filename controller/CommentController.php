@@ -35,20 +35,22 @@ class CommentController extends Controller
 
 		$article->persist();
 
-		header('Location: /article?id=' . $articleId);
+		header('Location: /article?id=' . $articleId . "#comment-" . $comment->getId());
 	}
 
 	public function commentAddToCommentSubmitAction($commentId, $pseudo, $content)
 	{
 		$parent = Comment::findById($commentId);
 
-		$comment = new Comment(0, $commentId);
+		$comment = new Comment($parent->getArticleId(), $commentId);
 
 		$comment->setPseudo($pseudo);
 		$comment->setContent($content);
 		$comment->setLevel($parent->getLevel() + 1);		
 
 		$comment->persist();
+
+		echo $comment->getId();
 	}
 
 	public function commentEditAction($id)

@@ -46,7 +46,7 @@
     <div class="col-lg-9">
 	    {% for comment1 in article.comments %}
         {% if comment1.alert == 0 %}
-	      <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+	      <div id="comment-{{ comment1.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
           <div class="panel-body">
             <h5>{{ comment1.pseudo }}</h5>
             <h5> {{ comment1.title }} 
@@ -62,7 +62,7 @@
             <div>
               {% for comment2 in comment1.comments %}
                 {% if comment2.alert == 0 %}
-                <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                <div id="comment-{{ comment2.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
                   <div class="panel-body">
                     <h5> {{ comment2.pseudo }}
                       <small> {{ comment2.date | date("m/d/Y") }}</small>
@@ -77,7 +77,7 @@
                     <div>
                       {% for comment3 in comment2.comments %}
                         {% if comment3.alert == 0 %}
-                        <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                        <div id="comment-{{ comment3.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
                           <div class="panel-body">
                             <h5> {{ comment3.pseudo }}
                               <small> {{ comment3.date | date("m/d/Y") }} </small>
