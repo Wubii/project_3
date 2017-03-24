@@ -38,7 +38,7 @@
               </div>
               <div class="panel-body">
                 {% for comment in comments %}
-                  <h5>{{ comment.title }}<small> | {{ comment.date | date("m/d/Y") }}</small></h5>
+                  <a href="/dashboard/comments#comment{{ comment.id }}"><h5>{{ comment.title }}<small> | {{ comment.date | date("m/d/Y") }} | {{ comment.pseudo }}</small></h5></a>
                 {% endfor %}
               </div>
             </div>

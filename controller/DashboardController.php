@@ -53,7 +53,7 @@ class DashboardController extends Controller
 		$comments = Comment::findAll();
 
 		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
-			"comments"=> $comments
+			"comments" => $comments
 		));
 	}
 
@@ -69,6 +69,7 @@ class DashboardController extends Controller
 	public function dashboardCommentAlertListAction()
 	{
 		$comments = Comment::findAllByAlert();
+
 
 		echo self::$twig->load('DashboardCommentList.html.twig')->render(array(
 			"comments"=> $comments
@@ -112,11 +113,35 @@ class DashboardController extends Controller
 
 	function dashboardUserListAction()
 	{
-		$users = Comment::findAll();
+		$users = User::findAll();
 
 		echo self::$twig->load('DashboardUserList.html.twig')->render(array(
 			"users"=> $users
 		));
+	}
+
+	public function dashboardUserAddAction($username, $mail, $password)
+	{
+		$user = new User();
+
+		$user->setUsername($username);
+		$user->setMail($mail);
+		$user->setPassword($password);
+		$user->setRole(0);
+		$user->setLocked(0);
+
+		$user->persist();
+	}
+
+	public function dashboardUserDeleteAction($id)
+	{
+		$user = User::findById($id);
+
+		if(!is_null($user))
+		{
+			echo $id;
+			$user->remove();
+		}
 	}
 
 }

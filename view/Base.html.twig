@@ -31,6 +31,9 @@
 
   <body>
 
+  <div class="container-fluid">
+    <div class="col-lg-12">
+
     {% block sidebar %}
 
     
@@ -53,9 +56,21 @@
         <li>
           <a href="/dashboard">Dashboard</a>
         </li>
+        <li>
+          <a href="/session/login">Login</a>
+        </li>
+        <li>
+          <a href="/session/register">Register</a>
+        </li>
       </ul>
-    </div>
+    </div> 
 
+    {% set flash = session.flash %}
+    {% if flash.message != '' %}
+      <div class="alert alert-{{ flash.type }}" role="alert">
+        <p>{{ flash.message|raw }}</p>
+      </div> 
+    {% endif %}
 
     {% endblock %}
 
@@ -69,5 +84,7 @@
 
     {% endblock %}
 
+    </div>
+  </div>
   </body>
 </html>

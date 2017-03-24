@@ -46,9 +46,9 @@
     <div class="col-lg-9">
 	    {% for comment1 in article.comments %}
         {% if comment1.alert == 0 %}
-	      <div id="comment-{{ comment1.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+	      <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
           <div class="panel-body">
-            <h5>{{ comment1.pseudo }}</h5>
+            <h5 id="comment{{ comment1.id }}" >{{ comment1.pseudo }}</h5>
             <h5> {{ comment1.title }} 
 	            <small>  {{ comment1.date | date("m/d/Y") }} </small>
               <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment1.id }}"><small class="text-warning"> Modifier </small></a>
@@ -62,9 +62,9 @@
             <div>
               {% for comment2 in comment1.comments %}
                 {% if comment2.alert == 0 %}
-                <div id="comment-{{ comment2.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
                   <div class="panel-body">
-                    <h5> {{ comment2.pseudo }}
+                    <h5 id="comment{{ comment2.id }}" > {{ comment2.pseudo }}
                       <small> {{ comment2.date | date("m/d/Y") }}</small>
                       <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment2.id }}"><small class="text-warning"> Modifier </small></a>
                       <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment2.id }}"><small class="text-danger"> Supprimer </small></a>
@@ -77,9 +77,9 @@
                     <div>
                       {% for comment3 in comment2.comments %}
                         {% if comment3.alert == 0 %}
-                        <div id="comment-{{ comment3.id }}" class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                        <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
                           <div class="panel-body">
-                            <h5> {{ comment3.pseudo }}
+                            <h5 id="comment{{ comment3.id }}" > {{ comment3.pseudo }}
                               <small> {{ comment3.date | date("m/d/Y") }} </small>
                               <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment3.id }}"><small class="text-warning"> Modifier </small></a>
                               <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment3.id }}"><small class="text-danger"> Supprimer </small></a>
@@ -138,12 +138,15 @@
       </div>
       <div class="modal-body">
         <form>
-          <input id="modalCommentEditTitle" class="hidden" placeholder="Titre" type="text" name="title">
+          {% if comment.level < 2 %}
+            <input id="modalCommentEditTitle" class="hidden form-control" placeholder="Titre" type="text" name="title">
+            </br>
+            </br>
+          {% endif %}
+          <input id="modalCommentEditPseudo" class="form-control" disabled="disabled" type="text" placeholder="Pseudo" name="pseudo" style="background-color:#e6e6e6">
           </br>
-          <input id="modalCommentEditPseudo" type="text" placeholder="Pseudo" name="pseudo">
           </br>
-          </br>
-          <textarea id="modalCommentEditContent" class="styled" placeholder="Votre message..." name="content" rows="4" cols="50"></textarea>
+          <textarea id="modalCommentEditContent" class="styled form-control" placeholder="Votre message..." name="content" rows="4" cols="50"></textarea>
         </form> 
       </div>
       <div class="modal-footer">
