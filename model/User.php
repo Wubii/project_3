@@ -3,10 +3,11 @@
 class User extends Entity
 {
 	private $id = 0;
-    private $username;
-    private $mail;
-    private $password;
-    private $role;
+    private $username = "";
+    private $email = "";
+    private $password = ""; 
+    private $token = null;
+    private $role = 0;
     private $locked = 0;
 
     private static function createTableIfNeeded()
@@ -17,9 +18,10 @@ class User extends Entity
             $sql = 'CREATE TABLE IF NOT EXISTS mb_user (
                 id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
                 username VARCHAR(255) NOT NULL,
-                mail VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
                 password VARCHAR(40) NOT NULL,
-                role VARCHAR(255) NOT NULL UNSIGNED,
+                token VARCHAR(64),
+                role SMALLINT UNSIGNED,
                 locked SMALLINT UNSIGNED,
                 PRIMARY KEY (id))';
 
@@ -41,12 +43,13 @@ class User extends Entity
     	if($this->id == 0)
         {
             $pdo->exec(
-                "INSERT INTO mb_user (username, mail, password, role, locked) VALUES (" . 
+                "INSERT INTO mb_user (username, email, password, token, role, locked) VALUES (" . 
                 $pdo->quote($this->username) . "," . 
-                $pdo->quote($this->mail) . ",'" . 
-                $pdo->quote($this->password) . "','" . 
+                $pdo->quote($this->email) . "," . 
+                $pdo->quote($this->password) . "," . 
+                $pdo->quote($this->token) . "," . 
                 $this->role . "," .
-                $this->locked . "," .
+                $this->locked .
                 ")"
             );
 
@@ -57,10 +60,11 @@ class User extends Entity
             $pdo->exec(
                 "UPDATE mb_user SET " .
                 "username = " . $pdo->quote($this->username) . 
-                ", mail = " . $pdo->quote($this->mail) . 
-                ", password = '" . $pdo->quote($this->password) . "'" .
-                ", role = '" . $this->role . "'" .
-                ", locked = '" . $this->locked . "'" .
+                ", email = " . $pdo->quote($this->email) . 
+                ", password = " . $pdo->quote($this->password) .
+                ", token = " . $pdo->quote($this->token) .
+                ", role = " . $this->role .
+                ", locked = " . $this->locked .
                 " WHERE id = " . $this->id
             );
         }
@@ -78,12 +82,13 @@ class User extends Entity
 
         while($data = $response->fetch())
         {
-            $users = new User();
+            $user = new User();
 
             $user->setId($data['id']);
             $user->setUsername($data['username']);
-            $user->setMail($data['mail']);
+            $user->setEmail($data['email']);
             $user->setPassword($data['password']);
+            $user->setToken($data['token']);
             $user->setRole($data['role']);
             $user->setLocked($data['locked']);
 
@@ -109,8 +114,9 @@ class User extends Entity
 
             $user->setId($dataArray[0]['id']);
             $user->setUsername($dataArray[0]['username']);
-            $user->setMail($dataArray[0]['mail']);
+            $user->setEmail($dataArray[0]['email']);
             $user->setPassword($dataArray[0]['password']);
+            $user->setToken($dataArray[0]['token']);
             $user->setRole($dataArray[0]['role']);
             $user->setLocked($dataArray[0]['locked']);
 
@@ -160,16 +166,16 @@ class User extends Entity
         return $this->username;
     }
 
-    public function setMail($mail)
+    public function setEmail($email)
     {
-        $this->mail = $mail;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getMail()
+    public function getEmail()
     {
-        return $this->mail;
+        return $this->email;
     }
 
     public function setPassword($password)
@@ -182,6 +188,18 @@ class User extends Entity
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    public function getToken()
+    {
+        return $this->token;
     }
 
     public function setRole($role)
@@ -206,5 +224,5 @@ class User extends Entity
     public function getLocked()
     {
         return $this->locked;
-    }
+    }   
 }

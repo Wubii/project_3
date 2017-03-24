@@ -2,61 +2,137 @@
 
 {% block content %}
 
-	<div class="container">
-	  <div class="row">
-        <div class="col-lg-10">
-          <div class="jumbotron">
-            <h4>Gerer vos utilisateurs</h4>
-		  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="jumbotron">
+          <h1>Gestion des utilisateurs</h1>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-10">
-          <div class="panel panel-default" style="margin-top:30px">
-            <div class="panel-body">
-              {% if users|length == 0 %}
-                <p> Pas de d'utilisateurs enregistres </p>
-              {% endif %}
-              {% for user in users %} 
-                <div class="panel panel-default" style="margin-top:30px">
-                  <div class="panel-body">	  
-	                <h4> Nom : {{ user.username }} </h4>	
-	                <small> Mail : {{ user.mail }} </small>
-	              </div>
-	            </div>
-              {% endfor %}
-            </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="panel panel-default" style="margin-top:30px">
+          <div class="panel-body">
+            <h3>Les utilisateurs suivants sont enregistrés sur votre site : </h3>
+            {#<a href="#" type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#modalUserAdd">
+              Add user 
+            </a>#}
+            {% if users|length == 0 %}
+              <p> Pas de d'utilisateurs enregistres </p>
+            {% endif %}
+            {% for user in users %} 
+              <div class="panel panel-default" style="margin-top:30px">
+                <div class="panel-body">
+                  <h5> Nom : {{ user.username }} </h5>	
+                  <h5> Mail : {{ user.email }} </h5>  
+                  <a href="#" type="button" class="btn btn-danger btn-xs pull-right" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}">
+                    Delete user 
+                  </a> 
+                </div>
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="modal fade" id="modalUserAdd" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">Enregistrer un nouvel utilisateur</h4>
+        </div>
+        <div class="modal-body">
+          <form>
+            <input id="modalUserAddUsername" class="form-control" type="text" placeholder="Username" name="username">
+            </br>
+            </br>
+            <input id="modalUserAddMail" class="form-control" type="text" placeholder="xxxx@xxxx.xxxx" name="mail">
+            </br>
+            </br>
+            <input id="modalUserAddPassword" class="form-control" type="text" placeholder="Password" name="password">
+          </form> 
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button id="modalUserAddSubmit" type="button" class="btn btn-success">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalUserDelete" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Supprimer l'utilisateur</h4>
+        </div>
+        <div class="modal-body">
+          <p> Etes-vous sur de vouloir supprimer cet utilisateur ? </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button id="modalUserDeleteSubmit" type="button" class="btn btn-danger">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 
+{% block javascript %}
+
+  <script type="text/javascript">
+
+  var userId;
+
+    /*-----------------------------------------------------------------------*/
+    /* Add user                                                              */
+    /*-----------------------------------------------------------------------*/
+
+    $('#modalUserAdd').on('show.bs.modal', function (event) 
+    {
+        var button = $(event.relatedTarget)
+        $('#modalUserAddPseudo').innerHTML = ""; 
+    });
+
+    $('#modalUserAddSubmit').on('click', function () 
+    {
+        var username = $('#modalUserAddUsername').val();
+        var mail     = $('#modalUserAddMail').val();
+        var password = $('#modalUserAddPassword').val();
+
+        $.post( "/dashboard/user/add", { username: username, mail: mail, password: password})
+        .done(function( data ) 
+        {
+            window.location.replace("/dashboard/users");
+        });
+    });
+
+    /*-----------------------------------------------------------------------*/
+    /* Edit user                                                             */
+    /*-----------------------------------------------------------------------*/
+
+    $('#modalUserDelete').on('show.bs.modal', function (event) 
+    {
+        var button = $(event.relatedTarget);
+        userId = button.data('user-id');
+    })
+
+    $('#modalUserDeleteSubmit').on('click', function ()
+    {
+        $.post( "/dashboard/user/delete", { id: userId })
+        .done(function( data ) 
+        {
+            window.location.replace("/dashboard/users");
+        });
+    });
 
 
+  </script>
 
-
-
-
-
-
-
-	    {#<div class="panel panel-default" style="margin-top:30px">
-          <div class="panel-body">
-			<a href="comment/add" class="btn btn-primary" role="button"> Add comment </a>
-			{% for comment in comments %} 
-			  <div class="panel panel-default" style="margin-top:30px">
-                <div class="panel-body">
-		          <h3> Title : {{ comment.title }} 
-		            <small> Date : {{ comment.date | date("m/d/Y") }}
-		              <a href="comment/delete?id={{ comment.id }}" style="color:red"> DELETE </a>
-		            </small>
-		          </h3>
-		          <p> Pseudo : {{ comment.pseudo }} </p>
-		          <p> Commentaire : {{ comment.content }} </p>
-		        </div>
-		      </div>
-		    {% endfor %}
-		  </div>
-		</div>#}
+{% endblock %}
