@@ -1,65 +1,159 @@
 {% extends "BaseDashboard.html.twig" %}
 
 {% block content %}
-
-	<div class="container">
-	  <div class="row">
-        <div class="col-lg-10">
-          <div class="jumbotron">
-            <h4>Les commentaires suivants ont été signalés par vos utilisateurs</h4>
-		  </div>
-        </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="jumbotron">
+          <h1> Modérer les commentaires 
+            </br>
+            <small>Les commentaires suivants ont été signalés</small>
+          </h1>
+          <p>Vous pouvez les visualiser, les publier á nouveau sur votre site ou bien les supprimer</p>
+	    </div>
       </div>
-      <div class="row">
-        <div class="col-lg-10">
+    </div>
+    <div class="row">
+      <div class="col-lg-10">
+        {% if comments|length == 0 %}
           <div class="panel panel-default" style="margin-top:30px">
             <div class="panel-body">
-              {% if comments|length == 0 %}
-                <p> Pas de commentaires signalés </p>
-              {% endif %}
-              {% for comment in comments %} 
-                <div class="panel panel-default" style="margin-top:30px">
-                  <div class="panel-body">	  
-	                <h4> Le commentaire suivant a été écrit par {{ comment.pseudo }}  
-	                  <a href="comment/show?id={{ comment.id }}" type="button" class="btn btn-sm btn-primary pull-right"> Modérer </a> 
-	                </h4>	
-	                  <small> {{ comment.date | date("m/d/Y") }} </small>
-	                <p><i> {{ comment.content[:100]|raw }}... </i></p>
-	              </div>
-	            </div>
-              {% endfor %}
+              <p> Pas de commentaires signalés </p>
             </div>
           </div>
+        {% endif %}
+        {% for comment in comments %} 
+          <div class="panel panel-default" style="margin-top:30px; border-left: 3px solid #d43f3a">
+            <div class="panel-body">	  
+	          <h4 id="comment{{ comment.id }}"> Le commentaire suivant a été écrit par {{ comment.pseudo }}, <small> le {{ comment.date | date("m/d/Y") }} </small></h4>	
+	          <p><i> {{ comment.content[:100]|raw }}... </i></p> 
+
+          {{ comment.id }}
+	          <a href="#" type="button" data-toggle="modal" data-target="#modalCommentModerate" data-comment-id="{{ comment.id }}" class="btn btn-xs btn-warning pull-right" style="margin-left:5px"> Modérer </a>
+
+	          <a href="/article?articleId={{ comment.articleId }}#comment{{ comment.id }}" type="button" class="btn btn-xs btn-primary pull-right" target="blank" style="margin-left:5px"> Voir </a>
+
+              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment.id }}" type="button" class="btn btn-xs btn-danger pull-right"> Supprimer </a>
+	        </div>
+	      </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalCommentModerate" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Modifier votre commentaire</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          {% if comment.level < 2 %}
+            <input id="modalCommentEditTitle" class="hidden" placeholder="Titre" type="text" name="title">
+            </br>
+          {% endif %}
+          <input id="modalCommentEditPseudo" type="text" placeholder="{{ comment.pseudo }}" name="pseudo" value="">
+          </br>
+          </br>
+          <textarea id="modalCommentEditContent" class="styled" placeholder="Votre message..." name="content" rows="4" cols="50"></textarea>
+        </form> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+        <button id="modalCommentEditSubmit" type="button" class="btn btn-warning">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="modalCommentDelete" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel">Supprimer le commentaire</h4>
+        </div>
+        <div class="modal-body">
+          <p> Etes-vous sur de vouloir supprimer votre commentaire ? </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <button id="modalCommentDeleteSubmit" type="button" class="btn btn-danger">Supprimer</button>
         </div>
       </div>
     </div>
+  </div>
 
 {% endblock %}
 
+{% block javascript %}
+
+<script type="text/javascript">
+
+  var commentId;
 
 
+  /*-----------------------------------------------------------------------*/
+  /* Edit comment                                                          */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentModerate').on('show.bs.modal', function (event) 
+  {
+      var button = $(event.relatedTarget);
+      var commentId = button.data('comment-id');
+
+      $.get( "/comment?id=" + commentId, function( data ) 
+      {
+          var comment = jQuery.parseJSON(data);
+          $('#modalCommentEditTitle').val(comment.title);
+          $('#modalCommentEditPseudo').val(comment.pseudo);
+          $('#modalCommentEditContent').val(comment.content);
+
+          if(comment.level == 1)
+          {
+              $('#modalCommentEditTitle').removeClass("hidden");
+          }
+          else{
+              $('#modalCommentEditTitle').addClass("hidden");
+          }
+
+      });
+
+      $('#modalCommentEditSubmit').on('click', function ()
+      {
+          var title = $('#modalCommentEditTitle').val();
+          var content = $('#modalCommentEditContent').val();
+
+          $.post( "/comment/edit", { id: commentId, title: title, content: content })
+          .done(function( data ) 
+          {
+              window.location.replace("/article?id=" + {{ article.id }});
+          });
+      });
+  });
+
+  /*-----------------------------------------------------------------------*/
+  /* Delete comment                                                        */
+  /*-----------------------------------------------------------------------*/
+
+  $('#modalCommentDelete').on('show.bs.modal', function (event) 
+  {
+      var button = $(event.relatedTarget);
+      commentId = button.data('comment-id');
+  })
+
+  $('#modalCommentDeleteSubmit').on('click', function ()
+  {
+      $.post( "/comment/delete", { id: commentId })
+      .done(function( data ) 
+      {
+          window.location.replace("/article?id=" + {{ article.id }});
+      });
+  });
 
 
+</script>
 
-
-
-
-
-	    {#<div class="panel panel-default" style="margin-top:30px">
-          <div class="panel-body">
-			<a href="comment/add" class="btn btn-primary" role="button"> Add comment </a>
-			{% for comment in comments %} 
-			  <div class="panel panel-default" style="margin-top:30px">
-                <div class="panel-body">
-		          <h3> Title : {{ comment.title }} 
-		            <small> Date : {{ comment.date | date("m/d/Y") }}
-		              <a href="comment/delete?id={{ comment.id }}" style="color:red"> DELETE </a>
-		            </small>
-		          </h3>
-		          <p> Pseudo : {{ comment.pseudo }} </p>
-		          <p> Commentaire : {{ comment.content }} </p>
-		        </div>
-		      </div>
-		    {% endfor %}
-		  </div>
-		</div>#}
+{% endblock %}

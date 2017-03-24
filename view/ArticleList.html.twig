@@ -11,8 +11,7 @@
         <div class="element col-lg-10"> 
           <a href="article?articleId={{ article.id }}" class="text-muted"> 
             <h3> {{ article.title }} 
-              <small> {{ article.date | date("m/d/Y") }} </small>      
-              ................................................................................ 
+              <small> {{ article.date | date("m/d/Y") }} </small>  ->
               <small class="text-muted">Lire</small>
             </h3>
             <p><i> {{ article.content[:100]|raw }}... </i></p>

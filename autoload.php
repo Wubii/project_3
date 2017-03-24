@@ -30,6 +30,18 @@ spl_autoload_register(function ($class)
 	} 
 });
 
+spl_autoload_register(function ($class)
+{
+	$fileName = __DIR__ . "/lib/Session/" . $class . ".php";
+
+	if(file_exists($fileName)) 
+	{
+		require_once($fileName);
+	} 
+});
+
 require_once(__DIR__ . "/lib/Twig/Autoloader.php");
 
 Twig_Autoloader::register();
+
+require_once __DIR__ . "/lib/PHPMailer/PHPMailerAutoload.php";
