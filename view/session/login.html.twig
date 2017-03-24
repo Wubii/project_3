@@ -1,0 +1,15 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+  
+  <form action="/session/login" method="post">
+    <input type="text" placeholder="Username" name="username">
+    </br>
+    </br>
+    <input type="password" placeholder="Password" name="password">
+    </br>
+    </br>
+    <input type="submit" value="Valider">
+  </form> 
+  
+{% endblock %}

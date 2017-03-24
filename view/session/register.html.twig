@@ -1,0 +1,27 @@
+{% extends "Base.html.twig" %}
+
+{% block content %}
+  <div class="container">
+    <div class="col-lg-offset-2 col-lg-6">
+      <div class="panel panel-default" style="margin-top: 100px">
+        <div class="panel-body">
+          <h3> Enregistrez-vous : </h3>
+          <hr>
+          <form action="/session/register" method="post">
+            <input class="form-control" type="text" placeholder="Pseudo" name="username">
+            </br>
+            </br>
+            <input class="form-control" type="email" placeholder="Adresse mail" name="email">
+            </br>
+            </br>
+            <input class="form-control" type="password" placeholder="Mot de passe" name="password">
+            </br>
+            </br>
+            <input class="btn btn-primary btn-md pull-right" type="submit" value="Valider">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div> 
+  
+{% endblock %}
