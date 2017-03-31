@@ -149,69 +149,97 @@ class Article extends Entity
         }
     }
 
-        public function setId($id)
+    public static function findLastOne()
+    {
+        self::createTableIfNeeded();
+
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article ORDER BY date ASC LIMIT 1");
+        
+        $dataArray = $response->fetchAll();
+
+        $data = end($dataArray);
+
+        if(is_null($data) == false)
         {
-            $this->id = $id;
+            $article = new Article();
 
-            return $this;
+            $article->setId($data['id']);
+            $article->setTitle($data['title']);
+            $article->setContent($data['content']);
+            $article->setAuthor($data['author']);
+            $article->setDate(new DateTime($data['date']));
+
+            return $article;
         }
-
-        public function getId()
+        else
         {
-            return $this->id;
-        }
+            return null;
+        }   
+    }
 
-        public function setTitle($title)
-        {
-            $this->title = $title;
+    public function setId($id)
+    {
+        $this->id = $id;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        public function getTitle()
-        {
-            return $this->title;
-        }
+    public function getId()
+    {
+        return $this->id;
+    }
 
-        public function setContent($content)
-        {
-            $this->content = $content;
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        public function getContent()
-        {
-            return $this->content;
-        }
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-        public function setAuthor($author)
-        {
-            $this->author = $author;
+    public function setContent($content)
+    {
+        $this->content = $content;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        public function getAuthor()
-        {
-            return $this->author;
-        }
+    public function getContent()
+    {
+        return $this->content;
+    }
 
-        public function setDate($date)
-        {
-            $this->date = $date;
+    public function setAuthor($author)
+    {
+        $this->author = $author;
 
-            return $this;
-        }
+        return $this;
+    }
 
-        public function getDate()
-        {
-            return $this->date;
-        }
+    public function getAuthor()
+    {
+        return $this->author;
+    }
 
-        public function getComments()
-        {
-            return Comment::findAllByArticle($this);
-        }
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    public function getComments()
+    {
+        return Comment::findAllByArticle($this);
+    }
 } 
 

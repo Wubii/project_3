@@ -6,9 +6,11 @@ class ArticleController extends Controller
 	{
 		// retourne la liste de tous les articles
 		$articles = Article::findAll();
+		$auth = new Authentification();
 
 		echo self::$twig->load('ArticleList.html.twig')->render(array(
-			"articles"=> $articles
+			"articles"=> $articles,
+			'role' => $auth->getRole()
 		));
 	}
 
@@ -72,9 +74,12 @@ class ArticleController extends Controller
 
 	public function articleAction($id)
 	{
+		$auth = new Authentification();
+
 		$article = Article::findById($id);
 		echo self::$twig->load('Article.html.twig')->render(array(
-			"article"=> $article
+			"article"=> $article,
+			'role' => $auth->getRole()
 		));
 	}
 }
