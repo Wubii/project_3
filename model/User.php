@@ -2,12 +2,16 @@
 
 class User extends Entity
 {
+    const ROLE_ANONYMOUS = 0;
+    const ROLE_GUEST = 1;
+    const ROLE_ADMIN = 2;
+
 	private $id = 0;
     private $username = "";
     private $email = "";
     private $password = ""; 
     private $token = null;
-    private $role = 0;
+    private $role = self::ROLE_GUEST;
     private $locked = 0;
 
     private static function createTableIfNeeded()
@@ -105,9 +109,95 @@ class User extends Entity
         // Creation de la table
         self::createTableIfNeeded();
 
-        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_user WHERE id=" . $id);
+        try
+        {
+            $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_user WHERE id=" . $id);
         
-        $dataArray = $response->fetchAll();
+            $dataArray = $response->fetchAll();
+        }
+        catch(Exception $e)
+        {
+            return null;
+        }
+
+        if(empty($dataArray) == false)
+        {
+            $user = new User();
+
+            $user->setId($dataArray[0]['id']);
+            $user->setUsername($dataArray[0]['username']);
+            $user->setEmail($dataArray[0]['email']);
+            $user->setPassword($dataArray[0]['password']);
+            $user->setToken($dataArray[0]['token']);
+            $user->setRole($dataArray[0]['role']);
+            $user->setLocked($dataArray[0]['locked']);
+
+            return $user;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static function findByUsername($username)
+    {
+        // Creation de la table
+        self::createTableIfNeeded();
+
+        try
+        {
+            $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_user WHERE username='" . $username . "'");
+        
+            $dataArray = $response->fetchAll();
+        }
+        catch(Exception $e)
+        {
+            print_r($e);
+            exit;
+
+            return null;
+        }
+
+        if(empty($dataArray) == false)
+        {
+            $user = new User();
+
+            $user->setId($dataArray[0]['id']);
+            $user->setUsername($dataArray[0]['username']);
+            $user->setEmail($dataArray[0]['email']);
+            $user->setPassword($dataArray[0]['password']);
+            $user->setToken($dataArray[0]['token']);
+            $user->setRole($dataArray[0]['role']);
+            $user->setLocked($dataArray[0]['locked']);
+
+            return $user;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static function findByUsernameOrEmail($username, $email)
+    {
+        // Creation de la table
+        self::createTableIfNeeded();
+
+        try
+        {
+            $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_user WHERE username='" . $username . "' OR email='" . $email . "'");
+        
+            $dataArray = $response->fetchAll();
+        }
+        catch(Exception $e)
+        {
+            print_r($e);
+            exit;
+
+            return null;
+        }
+
         if(empty($dataArray) == false)
         {
             $user = new User();

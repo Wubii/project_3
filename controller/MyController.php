@@ -6,16 +6,19 @@ class MyController extends Controller
 {
 	function homeAction() 
 	{
+		$article = Article::findLastOne();
+		$auth = new Authentification();
+
 		echo self::$twig->load('Home.html.twig')->render(array(
-			'session' => Session::getInstance()
+			'session' => Session::getInstance(),
+			'role' => $auth->getRole(),
+			'article' => $article
 		));
 	}
 
 	function testAction() 
 	{
-		$session = Session::getInstance();
-		$session->setFlash("tartampion", "success");
-		header('Location: /');
+		$article = Article::findLastOne();
 	}
 }
 

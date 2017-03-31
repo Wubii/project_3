@@ -5,14 +5,17 @@ class Route
 	private $url;
 
 	private $controllerAction;
+
+	private $role;
 	
 	// Méthode qui définit la route demandée
 	private $method;
 
-	public function __construct($url, $controllerAction, $method = RequestMethodInterface::METHOD_GET)
+	public function __construct($url, $controllerAction, $role, $method = RequestMethodInterface::METHOD_GET)
 	{
 		$this->url = $url;
 		$this->controllerAction = $controllerAction;
+		$this->role = $role;
 		$this->method = $method;
 	}
 
@@ -50,6 +53,11 @@ class Route
 		$this->controllerAction = $controllerAction;
 
 		return $this;
+	}
+
+	public function getRole()
+	{
+		return $this->role;
 	}
 
 	public function dispatch($parameters)
