@@ -4,22 +4,22 @@
 
   
     <!-- Page Content -->
-    <div id="page-content-wrapper">
-      <div class="container-fluid" id="flex-container">
-        <div class="row">
-          <!-- <div class="col-lg-3">
-            <img class="flex-element" src="img/knikRiver.jpg" style="width:100%">
+    <!--<div id="page-content-wrapper">-->
+      <div class="container-fluid">
+        <div class="row" style="padding-top:25px">
+          <div class="col-lg-6">
+            <img src="img/cover.png" style="width:100%">
           </div>
-          <div class="col-lg-3">
-            <img class="flex-element" src="img/bear.jpg" style="width:100%">
-          </div>
-          <div class="col-lg-3">
-            <img class="flex-element" src="img/river.jpg" style="width:100%">
-          </div>
-          <div class="col-lg-3">
-            <img class="flex-element" src="img/boulot.jpg" style="width:100%">
-          </div> -->
-            <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
+          <div class="col-lg-6">
+            <div class="row jumbotron" style="margin-top: 0; margin-right: 5px; padding: 15px;min-height:725px;">
+              <h3 style="text-align: center">Découvrez mon nouveau livre :</h3>
+              <h2 style="text-align: center;font-size:34px;">Un Billet simple pour l'Alaska</h2> 
+              <hr> 
+              <p> Retrouvez chaque semaine un nouveau chapitre sur mon site <a href="jeanforteroche.com/articles">jeanforteroche.com</a></p>
+              </br>
+              <p>Cette semaine le <a href="/article?id={{ article.id }}" style="color:#004d99">{{ article.title }}</a>
+              <blockquote style="border-left: 5px solid #444;">{{ article.content[:500]|raw }}</blockquote>
+            </div>
           </div>
         </div>
       </div>
@@ -37,5 +37,19 @@
 	    $("#wrapper").toggleClass("toggled");
 	});
 	</script>
+
+  <!-- <div class="col-lg-3">
+            <img class="flex-element" src="img/knikRiver.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/bear.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/river.jpg" style="width:100%">
+          </div>
+          <div class="col-lg-3">
+            <img class="flex-element" src="img/boulot.jpg" style="width:100%">
+          </div> -->
+            <!-- <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a> -->
 
 {% endblock %}

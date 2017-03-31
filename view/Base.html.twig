@@ -31,43 +31,53 @@
 
   <body>
 
-  <div class="container-fluid">
-    <div class="col-lg-12">
+  <div class="container-fluid background-home" style="padding:0">
+    <div class="col-lg-12" style="padding:0">
 
     {% block sidebar %}
 
     
-    <div id="wrapper" class="toggled">
+      <div id="wrapper" class="toggled">
 
   <!-- Sidebar -->
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand" style="padding:5px">
-          <a href="#" class="pull-right">
-            <img src="/img/logo/map.png" class="pull-left" style="width:100%">
+          <a href="/" class="pull-right">
+            <img src="/img/mikehorn.png" class="pull-left" style="width:80%;margin-left: 19px; margin-bottom: 30px; margin-top:19px">
           </a>
         </li>
         <li>
-          <a href="/">Jean FORTEROCHE</a>
+          <h3><a class="size" href="/"> Home </a></h3>
         </li>
         <li>
-          <a href="/articles">Un billet simple pour l'Alaska</a>
+          <h3><a class="size" href="/articles">Chapitres</a></h3>
+        </li>
+        {% if role == 0 %}
+        <li>
+          <h3><a class="size" href="/session/register">Enregistez-vous</a></h3>
         </li>
         <li>
-          <a href="/dashboard">Dashboard</a>
+          <h3><a class="size" href="/session/login">Connectez-vous</a></h3>
         </li>
+        {% endif %}
+        {% if role > 0 %}
         <li>
-          <a href="/session/login">Login</a>
+          <h3><a class="size" href="/session/logout">Déconnexion</a></h3>
         </li>
+        {% endif %}
+        {% if role == 2 %}
         <li>
-          <a href="/session/register">Register</a>
+          <h3><a class="size" href="/dashboard">Dashboard</a></h3>
         </li>
+        {% endif %}
       </ul>
     </div> 
 
     {% set flash = session.flash %}
     {% if flash.message != '' %}
-      <div class="alert alert-{{ flash.type }}" role="alert">
+      <div class="animation alert alert-{{ flash.type }}" role="alert">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <p>{{ flash.message|raw }}</p>
       </div> 
     {% endif %}
