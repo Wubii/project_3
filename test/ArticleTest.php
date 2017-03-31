@@ -16,7 +16,7 @@ class ArticleTest extends TestCase
 	{
 		$date = new DateTime("now");
 	}
-	
+
 	private $updatedId = 4;
 	private $updatedTitle = "title has been updated";
 	private $updatedContent = "content has been updated";
@@ -40,7 +40,7 @@ class ArticleTest extends TestCase
 		$article->setTitle($this->updatedTitle);
 		$article->setContent($this->updatedContent);
 		$article->setAuthor($this->updatedAuthor);
-		$article->setDate($this->updatedDate);
+		$article->setDate($this->date);
 	}
 
 	public function testArticleGetter()
@@ -51,7 +51,7 @@ class ArticleTest extends TestCase
 		$this->assertEquals($article->getTitle(), $this->updatedTitle);
 		$this->assertEquals($article->getContent(), $this->updatedContent);
 		$this->assertEquals($article->getAuthor(), $this->updatedAuthor);
-		$this->assertEquals($article->getDate(), $this->updatedDate);
+		$this->assertEquals($article->getDate(), $this->date);
 	}
 
 	public function testArticlePersist()
