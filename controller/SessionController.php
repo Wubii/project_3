@@ -66,7 +66,7 @@ class SessionController extends Controller
 		$mail->Subject = 'Confirmation de votre compte';
 		//$mail->Body    = 'Afin de valider votre compte merci de cliquer sur ce <a href="http://project3/session/confirm?id=' . $user->getId() . '&token=' . $user->getToken() . '"><b>lien</b></a>';
 
-        $mail->Body    = 'Afin de valider votre compte merci de cliquer sur ce <a href="http://jeanforteroche.wubiii.com/session/confirm?token=' . $user->getToken() . '"><b>lien</b></a>';
+        $mail->Body    = 'Afin de valider votre compte merci de cliquer sur ce <a href="http://jeanforteroche.wubiii.com/session/confirm?id=' . $user->getId() . '&token=' . $user->getToken() . '"><b>lien</b></a>';
 
 		// Affiche les erreurs
 		$session = Session::getInstance();

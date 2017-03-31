@@ -17,9 +17,7 @@ class MyController extends Controller
 	}
 
 	function testAction() 
-	{
-		$article = Article::findLastOne();
-	}
+	{}
 }
 
 ?>
