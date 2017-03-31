@@ -59,14 +59,14 @@ class ArticleTest extends TestCase
 		$articleAuthor = $article->getAuthor();
 		$articleDate = $article->getDate();
 
-		var_dump($articleTitle);
+		//var_dump($articleTitle);
 
 
-		// $this->assertEquals($article->getId(), $this->id);
-		// $this->assertEquals($article->getTitle(), $this->updatedTitle);
-		// $this->assertEquals($article->getContent(), $this->updatedContent);
-		// $this->assertEquals($article->getAuthor(), $this->updatedAuthor);
-		// $this->assertEquals($article->getDate(), $this->date);
+		$this->assertEquals($article->getId(), $this->id);
+		$this->assertEquals($article->getTitle(), $this->updatedTitle);
+		$this->assertEquals($article->getContent(), $this->updatedContent);
+		$this->assertEquals($article->getAuthor(), $this->updatedAuthor);
+		$this->assertEquals($article->getDate(), $this->date);
 	}
 
 	public function testArticlePersist()
