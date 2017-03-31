@@ -53,7 +53,7 @@ class ArticleTest extends TestCase
 		$articleAuthor = $article->getAuthor();
 		$articleDate = $article->getDate();
 
-		echo $articleId;
+		var_dump($articleId);
 
 
 		$this->assertEquals($article->getId(), $this->id);
