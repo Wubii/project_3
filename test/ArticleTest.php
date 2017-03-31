@@ -29,7 +29,7 @@ class ArticleTest extends TestCase
 		$this->assertEquals($article->getId(), 0);
 		$this->assertEquals($article->getTitle(), "");
 		$this->assertEquals($article->getContent(), "");
-		$this->assertEquals($article->getAuthor(), "jean forteroche");
+		$this->assertEquals($article->getAuthor(), "Jean FORTEROCHE");
 	}
 
 	public function testArticleSetter()
