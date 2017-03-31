@@ -153,7 +153,7 @@ class Article extends Entity
     {
         self::createTableIfNeeded();
 
-        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article ORDER BY date ASC LIMIT 1");
+        $response = Connexion::getConnexion()->getPdo()->query("SELECT * FROM mb_article ORDER BY date DESC LIMIT 1");
         
         $dataArray = $response->fetchAll();
 
