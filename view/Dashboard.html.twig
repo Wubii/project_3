@@ -12,9 +12,8 @@
                 <h1>Bienvenue
                   </br>
                   <small> Que souhaitez-vous faire ?</small></h1>
-	              <p></p>
-				        <p><a class="btn btn-primary" href="/dashboard/article/add" role="button">Ajouter un article</a></p>
-				        <p><a class="btn btn-success" href="/dashboard/article/add" role="button">Modération des commentaires</a></p>
+                  <a class="btn btn-primary" href="/dashboard/article/add" role="button">Ajouter un article</a>
+                  <a class="btn btn-success" href="/dashboard/article/add" role="button">Modérer les commentaires</a>
 		          </div>
             </div>
           </div>
@@ -22,11 +21,11 @@
             <div class="col-lg-6">
               <div class="panel panel-default">
                 <div class="panel-heading">
-                  <h4>Articles <span class="badge pull-right" style="background-color: #286090; font-size:16px;">{{ articles | length }}</span></h4>
+                  <h4>Tous vos articles <span class="badge pull-right" style="background-color: #286090; font-size:16px;">{{ articles | length }}</span></h4>
                 </div>
                 <div class="panel-body">
                   {% for article in articles %}
-                    <h5>{{ article.title }}<small> | {{ article.date | date("m/d/Y") }}</small></h5>
+                    <a href="/dashboard/article?id={{ article.id }}"><h5>{{ article.title }}<small> | {{ article.date | date("m/d/Y") }}</small></h5></a>
                   {% endfor %}
                 </div>
               </div>
@@ -34,11 +33,11 @@
             <div class="col-lg-6">
               <div class="panel panel-default">
               <div class="panel-heading">
-                <h4>Comments <span class="badge pull-right" style="background-color: #449d44; font-size:16px;">{{ comments | length }}</span></h4>
+                <h4>Commentaires signalés<span class="badge pull-right" style="background-color: #449d44; font-size:16px;">{{ comments | length }}</span></h4>
               </div>
               <div class="panel-body">
                 {% for comment in comments %}
-                  <a href="/dashboard/comments#comment{{ comment.id }}"><h5>{{ comment.title }}<small> | {{ comment.date | date("m/d/Y") }} | {{ comment.pseudo }}</small></h5></a>
+                  <a href="/dashboard/comments#comment{{ comment.id }}"><h5>Le commentaire écrit par {{ comment.pseudo }} a été signalé | {{ comment.date | date("m/d/Y") }} | </h5></a>
                 {% endfor %}
               </div>
             </div>

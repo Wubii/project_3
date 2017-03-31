@@ -9,7 +9,7 @@
             </br>
             <small>Les commentaires suivants ont été signalés</small>
           </h1>
-          <p>Vous pouvez les visualiser, les publier á nouveau sur votre site ou bien les supprimer</p>
+          <h5>Vous pouvez les visualiser, les publier à nouveau sur votre site ou bien les supprimer</h5>
 	    </div>
       </div>
     </div>
@@ -26,14 +26,11 @@
           <div class="panel panel-default" style="margin-top:30px; border-left: 3px solid #d43f3a">
             <div class="panel-body">	  
 	          <h4 id="comment{{ comment.id }}"> Le commentaire suivant a été écrit par {{ comment.pseudo }}, <small> le {{ comment.date | date("m/d/Y") }} </small></h4>	
-	          <p><i> {{ comment.content[:100]|raw }}... </i></p> 
+	          <p><i> {{ comment.content|raw }} </i></p> 
+	          <a href="/dashboard/comment/publish?id={{ comment.id }}" type="button" class="btn btn-xs btn-warning pull-right" style="margin-left:5px"> Publier </a>
+	          {#<!--<a href="/article?articleId={{ comment.articleId }}#comment{{ comment.id }}" type="button" class="btn btn-xs btn-primary pull-right" target="blank" style="margin-left:5px"> Voir </a>-->#}
 
-          {{ comment.id }}
-	          <a href="#" type="button" data-toggle="modal" data-target="#modalCommentModerate" data-comment-id="{{ comment.id }}" class="btn btn-xs btn-warning pull-right" style="margin-left:5px"> Modérer </a>
-
-	          <a href="/article?articleId={{ comment.articleId }}#comment{{ comment.id }}" type="button" class="btn btn-xs btn-primary pull-right" target="blank" style="margin-left:5px"> Voir </a>
-
-              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment.id }}" type="button" class="btn btn-xs btn-danger pull-right"> Supprimer </a>
+            <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment.id }}" type="button" class="btn btn-xs btn-danger pull-right"> Supprimer </a>
 	        </div>
 	      </div>
         {% endfor %}
@@ -73,10 +70,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel">Supprimer le commentaire</h4>
+          <h4 class="modal-title">Supprimer le commentaire</h4>
         </div>
         <div class="modal-body">
-          <p> Etes-vous sur de vouloir supprimer votre commentaire ? </p>
+          <p> Êtes-vous sur de vouloir supprimer ce commentaire ? </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
@@ -146,14 +143,12 @@
 
   $('#modalCommentDeleteSubmit').on('click', function ()
   {
-      $.post( "/comment/delete", { id: commentId })
+      $.post( "/comment/delete?id=", { id: commentId })
       .done(function( data ) 
       {
-          window.location.replace("/article?id=" + {{ article.id }});
+          window.location.replace("/dashboard/comments");
       });
   });
-
-
 </script>
 
 {% endblock %}

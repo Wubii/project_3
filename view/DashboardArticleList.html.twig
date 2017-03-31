@@ -10,7 +10,7 @@
             <div class="col-lg-12">
               <div class="jumbotron">
                 <h1>Administrez vos articles</h1>
-				        <p><span><a href="article/add" class="btn btn-primary pull-left" role="button"> Add a new article </a></span></p>
+				        <a href="article/add" class="btn btn-primary pull-left" role="button"> Ajouter un nouvel article </a>
 		          </div>
             </div>
           </div>
@@ -25,8 +25,8 @@
                   <h4>
                     {{ article.title }}
                     <small> | {{ article.date | date("m/d/Y") }}</small>
-                    <a href="/dashboard/article/edit?id={{ article.id }}" type="button" class="btn btn-success btn-xs">Edit</a>
-                    <a href="/dashboard/article/delete?id={{ article.id }}" class="btn btn-danger btn-xs" role="button"> Delete article </a>
+                    <a href="/dashboard/article/edit?id={{ article.id }}" type="button" class="btn btn-success btn-xs">Éditer</a>
+                    <a href="/dashboard/article/delete?id={{ article.id }}" class="btn btn-danger btn-xs" role="button"> Supprimer</a>
                   </h4>
                 {% endfor %}
               </div>

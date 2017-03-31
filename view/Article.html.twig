@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-lg-offset-1 col-lg-10" style="text-align: justify;">
       <div class="jumbotron" style="margin:0;">
-        <h2> {{ article.title }} </h2>
+        <h2 id="comment{{ comment.id }}"> {{ article.title }} </h2>
 	      <p><small><i>{{ article.date | date("m/d/Y") }}</i></small></p>
 	      <p><i style="font-size: 15px"> {{ article.content|raw }} </i></p>
         </br>
