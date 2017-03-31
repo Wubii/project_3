@@ -26,10 +26,10 @@ class ArticleTest extends TestCase
 	{
 		$article = new Article();
 
-		$this->assertEquals($article->getId(), $this->id);
-		$this->assertEquals($article->getTitle(), $this->title);
-		$this->assertEquals($article->getContent(), $this->content);
-		$this->assertEquals($article->getAuthor(), $this->author);
+		$this->assertEquals($article->getId(), 0);
+		$this->assertEquals($article->getTitle(), "");
+		$this->assertEquals($article->getContent(), "");
+		$this->assertEquals($article->getAuthor(), "jean forteroche");
 	}
 
 	public function testArticleSetter()
