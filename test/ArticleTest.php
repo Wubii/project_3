@@ -47,8 +47,8 @@ class ArticleTest extends TestCase
 	{
 		$article = new Article();
 
-		echo $article->getId();
-		echo $this->id;
+		var_dump($article->getId());
+		var_dump($this->id);
 
 		$this->assertEquals($article->getId(), $this->id);
 		$this->assertEquals($article->getTitle(), $this->updatedTitle);
