@@ -59,9 +59,6 @@ class ArticleTest extends TestCase
 		$articleAuthor = $article->getAuthor();
 		$articleDate = $article->getDate();
 
-		//var_dump($articleTitle);
-
-
 		$this->assertEquals($article->getId(), $this->id);
 		$this->assertEquals($article->getTitle(), $this->updatedTitle);
 		$this->assertEquals($article->getContent(), $this->updatedContent);
@@ -103,7 +100,7 @@ class ArticleTest extends TestCase
 		$article2 = Article::findById($id);
 		
 		$this->assertEquals($article2->remove(), true);
-		//$this->assertEquals($article2->remove(), false);
+		$this->assertEquals($article2->remove(), false);
 	}
 }
 
