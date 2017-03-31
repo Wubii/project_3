@@ -2,109 +2,105 @@
 
 {% block content %}
 
-<div class="container" style="padding: 20px">
+<div class="container-fluid background-article" style="padding: 20px">
   <div class="row">
-    <div class="col-lg-10" style="text-align: justify;">
-      <h3> {{ article.title }} 
-        <small> {{ article.author }} </small>
-	    </h3>
-	    <p><small><i>{{ article.date | date("m/d/Y") }}</i></small></p>
-	    <p><i> {{ article.content|raw }} </i></p>
+    <div class="col-lg-offset-1 col-lg-10" style="text-align: justify;">
+      <div class="jumbotron" style="margin:0;">
+        <h2> {{ article.title }} </h2>
+	      <p><small><i>{{ article.date | date("m/d/Y") }}</i></small></p>
+	      <p><i style="font-size: 15px"> {{ article.content|raw }} </i></p>
+        </br>
+        <p class="pull-right">La suite, c'est la semaine prochaine !</p>
+      </div>
     </div>
   </div>
   <div id="add-comment" class="row">
-    <div class="col-lg-offset-1 col-lg-6">
-      <h4>Laissez un commentaire : </h4>
-      <form action="/comment/add-to-article" method="post">
-        <input type="hidden" name="articleId" value="{{ article.id }}">
-        <table class="table no-border">
-          <tr>
-            <td>
-              <input placeholder="Pseudo" type="text" name="pseudo">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input placeholder="Titre" type="text" name="title">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <textarea id="styled" name="content" placeholder="Votre message..."></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input class="pull-right btn btn-success btn-sm" type="submit" value="Valider">
-            </td>
-          </tr>
-        </table>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-9">
-	    {% for comment1 in article.comments %}
-        {% if comment1.alert == 0 %}
-	      <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
-          <div class="panel-body">
-            <h5 id="comment{{ comment1.id }}" >{{ comment1.pseudo }}</h5>
-            <h5> {{ comment1.title }} 
-	            <small>  {{ comment1.date | date("m/d/Y") }} </small>
-              <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment1.id }}"><small class="text-warning"> Modifier </small></a>
-              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment1.id }}"><small class="text-danger"> Supprimer </small></a>
-	          </h5>
-	     		  <p><i> {{ comment1.content|raw }} </i></p>
-            <p> 
-              <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment1.id }}"><small class="text-success"> Repondre </small></a>
-              <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment1.id }}"><small> Signaler </small></a>
-            </p>
-            <div>
-              {% for comment2 in comment1.comments %}
-                {% if comment2.alert == 0 %}
-                <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
-                  <div class="panel-body">
-                    <h5 id="comment{{ comment2.id }}" > {{ comment2.pseudo }}
-                      <small> {{ comment2.date | date("m/d/Y") }}</small>
-                      <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment2.id }}"><small class="text-warning"> Modifier </small></a>
-                      <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment2.id }}"><small class="text-danger"> Supprimer </small></a>
-                    </h5>
-                    <p><i> {{ comment2.content|raw }} </i></p>
-                    <p> 
-                      <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment2.id }}"><small class="text-success"> Repondre </small></a>
-                      <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment2.id }}"><small> Signaler </small></a>
-                    </p>
-                    <div>
-                      {% for comment3 in comment2.comments %}
-                        {% if comment3.alert == 0 %}
-                        <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
-                          <div class="panel-body">
-                            <h5 id="comment{{ comment3.id }}" > {{ comment3.pseudo }}
-                              <small> {{ comment3.date | date("m/d/Y") }} </small>
-                              <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment3.id }}"><small class="text-warning"> Modifier </small></a>
-                              <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment3.id }}"><small class="text-danger"> Supprimer </small></a>
-                            </h5>
-                            <p><i> {{ comment3.content|raw }} </i></p>
-                            <p> 
-                              <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment3.id }}"><small> Signaler </small></a>
-                            </p>
-                          </div>
-                        </div>
-                        {% endif %}
-                      {% endfor %}
-                    </div>
-                  </div>
+    <div class="col-lg-offset-1 col-lg-10">
+      <div class="jumbotron" style="margin:0">
+        <h4>LAISSER UN COMMENTAIRE : </h4>
+        <form action="/comment/add-to-article" method="post" style="margin-left: 18px">
+          <input type="hidden" name="articleId" value="{{ article.id }}">
+          <table class="table no-border">
+            <tr>
+              <td>
+                <input class="styled-text" placeholder="Pseudo" type="text" name="pseudo">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="styled-text" placeholder="Titre" type="text" name="title">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <textarea class="styled" name="content" placeholder="Votre message..."></textarea>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <input class="pull-right btn btn-success btn-sm" type="submit" value="Valider" style="margin-right: 115px">
+              </td>
+            </tr>
+          </table>
+        </form>
+        </br>
+        <h4>COMMENTAIRES :</h4>
+  	    {% for comment1 in article.comments %}
+          {% if comment1.alert == 0 %}
+  	        <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+              <div class="panel-body">
+                <h4 id="comment{{ comment1.id }}" >{{ comment1.pseudo }}</h4>
+                <h4> {{ comment1.title }} 
+  	              <small>  {{ comment1.date | date("m/d/Y") }} </small>
+                  <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment1.id }}"><small class="text-warning"> Modifier </small></a>
+                  <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment1.id }}"><small class="text-danger"> Supprimer </small></a>
+  	            </h4>
+  	     	  	  <p><i style="font-size: 15px"> {{ comment1.content|raw }} </i></p>
+                <p> 
+                  <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment1.id }}"><small class="text-success" style="font-size: 15px"> Répondre </small></a>
+                  <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment1.id }}"><small style="font-size: 15px"> Signaler </small></a>
+                </p>
+                {% for comment2 in comment1.comments %}
+                  {% if comment2.alert == 0 %}
+                    <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                      <div class="panel-body">
+                        <h5 id="comment{{ comment2.id }}" > {{ comment2.pseudo }}
+                          <small> {{ comment2.date | date("m/d/Y") }}</small>
+                          <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment2.id }}"><small class="text-warning"> Modifier </small></a>
+                          <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment2.id }}"><small class="text-danger"> Supprimer </small></a>
+                        </h5>
+                        <p><i style="font-size: 15px"> {{ comment2.content|raw }} </i></p>
+                        <p> 
+                          <a href="#" data-toggle="modal" data-target="#modalCommentAdd" data-comment-id="{{ comment2.id }}"><small class="text-success" style="font-size: 15px"> Repondre </small></a>
+                          <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment2.id }}"><small style="font-size: 15px"> Signaler </small></a>
+                        </p>
+                        {% for comment3 in comment2.comments %}
+                          {% if comment3.alert == 0 %}
+                            <div class="panel panel-default" style="margin-top:30px; margin-left:30px; border-left: 3px solid #5cb85c">
+                              <div class="panel-body">
+                                <h5 id="comment{{ comment3.id }}" > {{ comment3.pseudo }}
+                                  <small> {{ comment3.date | date("m/d/Y") }} </small>
+                                  <a href="#" data-toggle="modal" data-target="#modalCommentEdit" data-comment-id="{{ comment3.id }}"><small class="text-warning"> Modifier </small></a>
+                                  <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment3.id }}"><small class="text-danger"> Supprimer </small></a>
+                                </h5>
+                                <p><i style="font-size: 15px"> {{ comment3.content|raw }} </i></p>
+                                <p> 
+                                  <a href="#" data-toggle="modal" data-target="#modalCommentAlert" data-comment-id="{{ comment3.id }}"><small style="font-size: 15px"> Signaler </small></a>
+                                </p>
+                              </div>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
                 </div>
-                {% endif %}
-              {% endfor %}
-            </div>
-          </div>
+              </div>
+            {% endif %}
+          {% endfor %}
         </div>
-        {% endif %}
-      {% endfor %}
+      </div>
     </div>
-  </div>
-</div>
 
 <div class="modal fade" id="modalCommentAdd" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">

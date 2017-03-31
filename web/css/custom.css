@@ -1,19 +1,88 @@
 
-body
-{
+body p h3 h4{
+	font-size: 15px;
+	font-family: courier;
+}
+
+body {
 	background-color: #f2f2f2;
 }
 
-a:hover {
-	text-decoration:none;
+a {
+	color:#004d99;
 }
 
-.jumbotron {
+a:hover {
+	color: #003366;
+}
+
+a:hover {
+	color: #003366;
+}
+
+p
+{
+	font-family: courier;
+}
+
+.jumbotron p {
+	font-size:17px;
+	text-align: justify;
+}
+
+.jumbotron > h2 {
+	font-size:10px;
+	text-align: center;
+	color:#004d99;
+}
+
+.background-home 
+{
+	background-image: url(../img/river2.jpg);
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: 100%;
+	min-height: 800px;
+}
+
+.background-article-list 
+{
+	background-image: url(../img/back-tree.jpg);
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: 100%;
+	min-height: 800px;
+}
+
+.background-article 
+{
+	background-image: url(../img/trees.jpg);
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: 100%;
+	min-height: 800px;
+}
+
+.jumbotron 
+{
 	margin-top: 30px;
 	background-color: #fff;
-	border: 1px solid #ddd;
+	border: 1px solid #ddd;	
+	background-color: #f2f2f2;
 }
 
+.jumbotron h2
+{
+	font-size: 40px;
+	margin-top: 5px; 
+	color:#003366; 
+	text-align: center
+}
+
+
+body {
+		background-color: #f2f2f2;
+}
 .text-warning {
 	color: #f0ad4e !important;
 	text-decoration: none;
@@ -43,6 +112,14 @@ a:hover {
 	color: #535a5f !important;
 }
 
+.text-grey{
+	color: #f2f2f2;
+}
+
+.text-grey:hover {
+	color: #e6e6e6;
+}
+
 #flex-container
 {
     display: flex;
@@ -54,27 +131,77 @@ a:hover {
 	padding: 30px;
 }
 
-
-/* Add comment box -------------------------------------------------------*/
+/*------------------------------------------------------------------------*/
+/* Add comment box                                                        */
+/*------------------------------------------------------------------------*/
 
 #add-comment
 {
 	margin-top: 50px;
 }
 
-#styled 
+/*------------------------------------------------------------------------*/
+/* Formulaire                                                             */
+/*------------------------------------------------------------------------*/
+
+.styled 
 {
-	width: 600px;
+	width: 550px;
 	height: 120px;
-	border: 3px solid #cccccc;
+	border: 2px solid #cccccc;
 	padding: 5px;
-	font-family: Tahoma, sans-serif;
-	background-image: url(bg.gif);
-	background-position: bottom right;
-	background-repeat: no-repeat;
+	font-family: courier, sans-serif;
+}
+
+.styled-text 
+{
+	width: 300px;
+	height: 30px;
+	border: 2px solid #cccccc;
+	padding: 5px;
+	font-family: courier, sans-serif;
 }
 
 .no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th
 {
     border-top-width: 0px;
 }
+
+/*------------------------------------------------------------------------*/
+/* Add comment box                                                        */
+/*------------------------------------------------------------------------*/
+
+.animation {
+	animation-duration: 2s;
+}
+
+/*------------------------------------------------------------------------*/
+/* Custom sidebar                                                         */
+/*------------------------------------------------------------------------*/
+
+.size {
+	padding: 15px;
+	font-family: courier;
+	font-size: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

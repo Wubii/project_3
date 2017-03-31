@@ -2,25 +2,29 @@
 
 {% block content %}
   
-  <div id="flex-contfainer" class="container">
-    <h2>Un billet simple pour l'Alaska </h2>
-    </br>
-    <h4>SOMMAIRE</h4>
-    {% for article in articles %}
-      <div class="row">
-        <div class="element col-lg-10"> 
-          <a href="article?articleId={{ article.id }}" class="text-muted"> 
-            <h3> {{ article.title }} 
-              <small> {{ article.date | date("m/d/Y") }} </small>  ->
-              <small class="text-muted">Lire</small>
-            </h3>
-            <p><i> {{ article.content[:100]|raw }}... </i></p>
-          </a>
+  <div class="container-fluid background-article-list" style="padding:25px">
+    <div class="row">
+      {#<div class="col-lg-6">
+        <div class="jumbotron" style="margin:0">
+          <img src="img/ours.jpg" style="width:100%">
         </div>
-      </div>
+      </div>#}
+      {% for article in articles %}
+        <div class="col-lg-6">
+          <div class="jumbotron" style="margin-bottom:0">
+            <a href="article?articleId={{ article.id }}" class="text-muted">
+              <h3> {{ article.title }} <small class="dotted"> {{ article.date | date("m/d/Y") }} </small>
+                <small class="text-muted">Lire</small>
+              </h3>
+              <p><i> {{ article.content[:100]|raw }}... </i></p>
+            </a>
+          </div>
+        </div>
+        </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-</div>
+  </div>
+
 {% endblock %}
 
 

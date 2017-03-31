@@ -1,15 +1,24 @@
 {% extends "Base.html.twig" %}
 
 {% block content %}
-  
-  <form action="/session/login" method="post">
-    <input type="text" placeholder="Username" name="username">
-    </br>
-    </br>
-    <input type="password" placeholder="Password" name="password">
-    </br>
-    </br>
-    <input type="submit" value="Valider">
-  </form> 
+  <div class="container">
+    <div class="col-lg-offset-2 col-lg-6">
+      <div class="panel panel-default" style="margin-top: 100px">
+        <div class="panel-body">
+          <h3> Connectez-vous : </h3>
+          <hr>
+          <form action="/session/login" method="post">
+		    <input class="form-control" type="text" placeholder="Identifiant ou Email" name="login">
+		    </br>
+		    </br>
+		    <input class="form-control" type="password" placeholder="Password" name="password">
+		    </br>
+		    </br>
+		    <input class="btn btn-primary btn-md pull-right" type="submit" value="Valider">
+		  </form> 
+        </div>
+      </div>
+    </div>
+  </div> 
   
 {% endblock %}
