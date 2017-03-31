@@ -56,6 +56,8 @@ class ArticleTest extends TestCase
 
 	public function testArticlePersist()
 	{
+		$date = new DateTime("now");
+		
 		$article = new Article();
 
 		$article->setTitle($this->title);
