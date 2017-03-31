@@ -31,8 +31,6 @@ class ArticleTest extends TestCase
 
 	public function testArticleSetter()
 	{
-		$date = new DateTime("now");
-
 		$article = new Article();
 
 		$article->setId($this->id);
@@ -55,14 +53,12 @@ class ArticleTest extends TestCase
 
 	public function testArticlePersist()
 	{
-		$date = new DateTime("now");
-
 		$article = new Article();
 
-		$article->setTitle("title");
-		$article->setContent("blabla");
-		$article->setAuthor("Jean giono");
-		$article->setDate($date);
+		$article->setTitle($this->title);
+		$article->setContent($this->content);
+		$article->setAuthor($this->author);
+		$article->setDate($this->date);
 
 		$article->persist();
 		$id = $article->getId();
@@ -70,10 +66,10 @@ class ArticleTest extends TestCase
 		$article2 = Article::findById($id);
 
 		$this->assertEquals($article2->getId(), $id);
-		$this->assertEquals($article2->getTitle(), "title");
-		$this->assertEquals($article2->getContent(), "blabla");
-		$this->assertEquals($article2->getAuthor(), "Jean giono");
-		$this->assertEquals($article2->getDate(), $date);
+		$this->assertEquals($article2->getTitle(), $this->title);
+		$this->assertEquals($article2->getContent(), $this->content);
+		$this->assertEquals($article2->getAuthor(), $this->author);
+		$this->assertEquals($article2->getDate(), $this->date);
 	}
 
 	public function testArticleRemove()
@@ -87,7 +83,7 @@ class ArticleTest extends TestCase
 		$article2 = Article::findById($id);
 		
 		$this->assertEquals($article2->remove(), true);
-//		$this->assertEquals($article2->remove(), false);
+		$this->assertEquals($article2->remove(), false);
 	}
 }
 
