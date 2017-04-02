@@ -45,11 +45,6 @@ class Article extends Entity
         array_push($this->newComments, $comment);
     }
 
-    public function removeComment($comment)
-    {
-
-    }
-
     public function persist()
     {
         $pdo = Connexion::getConnexion()->getPdo();

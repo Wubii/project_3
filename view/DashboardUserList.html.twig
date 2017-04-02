@@ -15,23 +15,53 @@
         <div class="panel panel-default" style="margin-top:30px">
           <div class="panel-body">
             <h3>Les utilisateurs suivants sont enregistrés sur votre site : </h3>
+            </br>
             {#<a href="#" type="button" class="btn btn-primary btn-sm pull-right" data-toggle="modal" data-target="#modalUserAdd">
               Add user 
             </a>#}
             {% if users|length == 0 %}
               <p> Pas de d'utilisateurs enregistres </p>
             {% endif %}
-            {% for user in users %} 
-              <div class="panel panel-default" style="margin-top:30px">
-                <div class="panel-body">
-                  <h5> Nom : {{ user.username }} </h5>	
-                  <h5> Mail : {{ user.email }} </h5>  
-                  <a href="#" type="button" class="btn btn-danger btn-xs pull-right" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}">
-                    Delete user 
-                  </a> 
-                </div>
-              </div>
-            {% endfor %}
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nom de l'utilisateur</th>
+                  <th>Adresse mail</th>
+                  <th>Role</th>
+                  <th>Suppression</th>
+                  <th>Bloqué</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %} 
+                  <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    {% if user.role == 1 %}
+                      <td>Enregistré</td>
+                    {% endif %}
+                    {% if user.role == 2 %}
+                      <td>Administrateur</td>
+                    {% endif %}
+                    {% if user.role == 3 %}
+                      <td>Bloqué</td>
+                    {% endif %}
+                    <td>
+                      <a href="#" type="button" class="text-danger" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}">Supprimer</a>
+                    </td>
+                    {% if user.role == 3 %}
+                      <td style="background-color: red"></td>
+                    {% endif %}
+                    {% if user.role == 1 %}
+                      <td style="background-color: green"></td>
+                    {% endif %}
+                    {% if user.role == 2 %}
+                      <td style="background-color: green"></td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

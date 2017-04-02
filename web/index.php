@@ -13,7 +13,7 @@ $routes = array(
 	/* INDEX -------------------------------------------------------------*/
 
 	new Route("/"    , "MyController::homeAction", User::ROLE_ANONYMOUS),
-	new Route("/test", "ArticleTest::ArticleTest", User::ROLE_ANONYMOUS),
+	new Route("/test", "MyController::ArticleTest", User::ROLE_ANONYMOUS),
 
 
 	/* ADMIN -------------------------------------------------------------*/
