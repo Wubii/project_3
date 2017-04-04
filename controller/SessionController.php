@@ -63,8 +63,8 @@ class SessionController extends Controller
 
 		$mail->isHTML(true);                                  // Set email format to HTML
 
-		$mail->Subject = 'Confirmation de votre compte';
-		$mail->Body    = 'Afin de valider votre compte merci de cliquer sur ce <a href="http://project3/session/confirm?id=' . $user->getId() . '&token=' . $user->getToken() . '"><b>lien</b></a>';
+		$mail->Subject = 'Confirmation de votre compte sur le site jeanforteroche.com';
+		$mail->Body    = 'Bonjour ' . $user->getUsername() .'<br><br>Merci de vous être enregistré sur mon site, afin de valider votre compte cliquez sur le <a href="http://project3/session/confirm?id=' . $user->getId() . '&token=' . $user->getToken() . '"><b>lien</b></a> suivant <br><h3>Il ne me reste plus qu\'à vous souhaiter une bonne lecture et n\'hésitez pas à laisser des commentaires ! </h3></a><br><br>Jean Forteroche';
 
         //$mail->Body    = 'Afin de valider votre compte merci de cliquer sur ce <a href="http://jeanforteroche.wubiii.com/session/confirm?id=' . $user->getId() . '&token=' . $user->getToken() . '"><b>lien</b></a>';
 
@@ -77,7 +77,7 @@ class SessionController extends Controller
 		}
 		else
 		{
-	    	$session->setFlash('<div class="animation"> Un message vient d être envoyé sur votre adresse mail, veuillez confirmer votre insription </div>' , "success");
+	    	$session->setFlash('Un message vient d\'être envoyé sur votre adresse mail, veuillez confirmer votre insription ' , "success");
 		}
 
 		header('Location: /');	
@@ -97,7 +97,7 @@ class SessionController extends Controller
 
 				$user->persist();
 
-				$session->setFlash('<div class="animation"> Vous êtes bien enregistré, veuillez vous connecter </div>' , "success");
+				$session->setFlash('Vous êtes bien enregistré, vous pouvez vous connecter ' , "success");
 
 				header('Location: /session/login');
 
@@ -105,12 +105,12 @@ class SessionController extends Controller
 			}
 			else 
 			{
-				$session->setFlash('<div class="animation"> Le compte n\'est pas valide </div>');
+				$session->setFlash('Le compte n\'est pas valide ');
 			}
 		}
 		else
 		{
-			$session->setFlash('<div class="animation"> Identifiant non valide : veuillez vous enregistrer </div>');
+			$session->setFlash('Identifiant ou mot de passe non valide. Si vous êtes un nouvel arrivant, veuillez d\'abord vous enregistrer ');
 		}
 
 		header('Location: /');
@@ -134,7 +134,7 @@ class SessionController extends Controller
 
 		if($auth->isConnected() == true)
 		{
-			$session->setFlash('<div class="animation"> Vous êtes déjà authentifié </div>');
+			$session->setFlash('Vous êtes déjà authentifié');
 
 			header('Location: /');
 
@@ -143,15 +143,28 @@ class SessionController extends Controller
 
 		$user = $auth->login($login, $password);
 
-		if($user == true)
+		
+
+		if(is_null($user) == false)
 		{
-			$session->setFlash('<div class="animation"> Bienvenue ' . $user->getUsername() . ', je vous laisse découvrir mon livre </div>', 'info');
+			if($user->getLocked() == true)
+			{
+				$auth->logout();
+
+				$session->setFlash('L\'administrateur du site a bloqué votre compte');
+
+				header('Location: /');
+
+				exit;
+			}
+
+			$session->setFlash('Bienvenue ' . $user->getUsername() . ', je vous laisse découvrir mon livre', 'info');
 			
 			header('Location: /');
 		}
 		else
 		{
-			$session->setFlash('<div class="animation"> Identifiant ou mot de passe non valide : veuillez d\'abord vous enregistrer </div>');	
+			$session->setFlash('Identifiant ou mot de passe non valide. Si vous êtes un nouvel arrivant, veuillez d\'abord vous enregistrer');	
 			
 			header('Location: /session/login');
 		}
@@ -165,7 +178,7 @@ class SessionController extends Controller
 
 		$auth->logout();
 
-		$session->setFlash('<div class="animation"> Vous êtes bien déconnecté. À bientôt ! </div>', 'info');
+		$session->setFlash('Vous êtes bien déconnecté. À bientôt !', 'info');
 
 		header('Location: /');
 	}

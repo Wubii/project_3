@@ -144,6 +144,18 @@ class DashboardController extends Controller
 		}
 	}
 
+	public function dashboardUserLockToggle($id)
+	{
+        $user = User::findById($id);
+
+        $user->lockToggle();
+
+        $user->persist();
+
+        header('Location: /dashboard/users');
+
+	}
+
 }
 
 ?>

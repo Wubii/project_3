@@ -19,6 +19,21 @@ class Authentification
         }
     }
 
+    public function isLocked()
+    {
+        $user = Session::getInstance()->read('auth');
+
+        // Si la personne n'est pas authentifiée
+        if(is_null($user) == true)
+        {
+            return false;
+        }
+        else
+        {
+            return $user->getLocked();
+        }
+    }
+
     public function login($login, $password)
     {
         $user = User::findByUsernameOrEmail($login, $login);

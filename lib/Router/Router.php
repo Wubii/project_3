@@ -39,6 +39,27 @@ class Router
 
 			$parameters = array();
 
+			$auth = new Authentification();
+
+			// Si la personne est pas autorisée 
+			if($auth->isAuthorized($route->getRole()) == false)
+			{
+				$session = Session::getInstance();
+					
+				if($auth->isConnected() == true)
+				{
+					$session->setFlash('<div class="animation"> Vous n\'êtes pas autorisé à consulter cette page </div>');
+				
+					header('Location: /');
+				}
+				else
+				{
+					header('Location: /session/login');
+				}
+
+				exit;
+			}
+
 			switch($requestMethod)
 			{
 				case RequestMethodInterface::METHOD_GET:
@@ -67,27 +88,6 @@ class Router
 				case RequestMethodInterface::METHOD_DELETE:
 					echo "DELETE";
 					break;				
-			}
-
-			$auth = new Authentification();
-
-			// Si la personne est pas autorisée 
-			if($auth->isAuthorized($route->getRole()) == false)
-			{
-				$session = Session::getInstance();
-					
-				if($auth->isConnected() == true)
-				{
-					$session->setFlash('<div class="animation"> Vous n\'êtes pas authorisé à consulter cette page </div>');
-				
-					header('Location: /');
-				}
-				else
-				{
-					header('Location: /session/login');
-				}
-
-				exit;
 			}
 
 			$route->dispatch($parameters);

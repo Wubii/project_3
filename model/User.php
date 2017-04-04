@@ -232,7 +232,19 @@ class User extends Entity
         return true;
     }
 
-   public function setId($id)
+    public function lockToggle()
+    {        
+        if($this->locked == 0)
+        {
+            $this->locked = 1;
+        }
+        else
+        {
+            $this->locked = 0;
+        }
+    }
+
+    public function setId($id)
     {
         $this->id = $id;
 
