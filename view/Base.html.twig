@@ -76,9 +76,9 @@
 
     {% set flash = session.flash %}
     {% if flash.message != '' %}
-      <div class="animation alert alert-{{ flash.type }}" role="alert">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <p>{{ flash.message|raw }}</p>
+      <div id="message" class="alert alert-{{ flash.type }}" role="alert">
+        <a id="message-close" class="pull-right close"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+        <p id="message-content">{{ flash.message|raw }}</p>
       </div> 
     {% endif %}
 
@@ -89,12 +89,31 @@
 
     {% endblock %}
 
-    {% block javascript %}
+    </div>
+  </div>
 
+    {% block javascript %}
 
     {% endblock %}
 
-    </div>
-  </div>
+      <script type="text/javascript">
+        
+        $(document).ready(function()
+        {
+          var message = $('#message-content').text();
+
+          if(message.length > 0)
+          {
+            $('#message').hide().slideDown(500);
+          }
+
+          $('#message-close').click(function(e)
+          {
+            e.preventDefault();
+            $('#message').slideUp();
+          })
+        })
+
+      </script>
   </body>
 </html>

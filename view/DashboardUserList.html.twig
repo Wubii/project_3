@@ -28,14 +28,14 @@
                   <th>Nom de l'utilisateur</th>
                   <th>Adresse mail</th>
                   <th>Role</th>
-                  <th>Suppression</th>
-                  <th>Bloqué</th>
+                  <th class="text-center">Suppression</th>
+                  <th class="text-center">Bloquer / Débloquer</th>
                 </tr>
               </thead>
               <tbody>
                 {% for user in users %} 
                   <tr>
-                    <td>{{ user.username }}</td>
+                    <td><b class="text-primary">{{ user.username }}</b></td>
                     <td>{{ user.email }}</td>
                     {% if user.role == 1 %}
                       <td>Enregistré</td>
@@ -43,20 +43,13 @@
                     {% if user.role == 2 %}
                       <td>Administrateur</td>
                     {% endif %}
-                    {% if user.role == 3 %}
-                      <td>Bloqué</td>
-                    {% endif %}
-                    <td>
-                      <a href="#" type="button" class="text-danger" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}">Supprimer</a>
+                    <td class="text-center">
+                      <a href="#" type="button" class="text-danger" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}"><span class="text-danger"><i class="fa fa-trash" aria-hidden="true"></i></span></a>
                     </td>
-                    {% if user.role == 3 %}
-                      <td style="background-color: red"></td>
-                    {% endif %}
-                    {% if user.role == 1 %}
-                      <td style="background-color: green"></td>
-                    {% endif %}
-                    {% if user.role == 2 %}
-                      <td style="background-color: green"></td>
+                    {% if user.locked == 1 %}
+                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-success"><span class="text-danger"><i class="fa fa-lock" aria-hidden="true"></i></a></td>
+                    {% else %}
+                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-danger"><span class="text-success"><i class="fa fa-unlock" aria-hidden="true"></i></a></td>
                     {% endif %}
                   </tr>
                 {% endfor %}

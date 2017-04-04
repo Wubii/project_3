@@ -1,7 +1,7 @@
 Options +FollowSymLinks
 RewriteEngine On
 
-RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png|fonts)$ [NC]
+RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png|woff2|woff|svg|ttf|eot|otf)$ [NC]
 RewriteCond %{REQUEST_URI} !ckeditor.*$ [NC]
 RewriteRule ^(.*)$ index.php [NC,L]
 

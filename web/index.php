@@ -32,10 +32,10 @@ $routes = array(
 	new Route("/dashboard/comment/publish"  , "DashboardController::dashboardCommentAlertPublishAction", User::ROLE_ADMIN),
 	new Route("/dashboard/comment/delete"   , "DashboardController::dashboardCommentAlertDeleteAction" , User::ROLE_ADMIN ),
 	
-	new Route("/dashboard/users"      , "DashboardController::dashboardUserListAction"  , User::ROLE_ADMIN ),
-	new Route("/dashboard/user/add"   , "DashboardController::dashboardUserAddAction"   , User::ROLE_ADMIN  , RequestMethodInterface::METHOD_POST),
-	new Route("/dashboard/user/delete", "DashboardController::dashboardUserDeleteAction", User::ROLE_ADMIN  , RequestMethodInterface::METHOD_POST),
-	
+	new Route("/dashboard/users"           , "DashboardController::dashboardUserListAction"  , User::ROLE_ADMIN ),
+	new Route("/dashboard/user/add"        , "DashboardController::dashboardUserAddAction"   , User::ROLE_ADMIN  , RequestMethodInterface::METHOD_POST),
+	new Route("/dashboard/user/delete"     , "DashboardController::dashboardUserDeleteAction", User::ROLE_ADMIN  , RequestMethodInterface::METHOD_POST),
+	new Route("/dashboard/user/lock/toggle", "DashboardController::dashboardUserLockToggle"  , User::ROLE_ADMIN ),
 
 	/* SITE --------------------------------------------------------------*/
 
