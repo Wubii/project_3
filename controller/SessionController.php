@@ -37,9 +37,41 @@ class SessionController extends Controller
 
 		$user = new User();
 
-		$user->setUsername($username);
-		$user->setEmail($email);
-		$user->setPassword($password);
+		if(preg_match('/^[a-zA-Z0-9_-]+$/', $username) == true)
+		{
+		    $user->setUsername($username);
+		}
+	    else 
+	    {
+	    	$session->setFlash('Votre pseudo ne doit comporter que des lettres et/ou des chiffres');
+		
+			header('Location: /session/register');
+			exit;
+	    }
+
+		if(preg_match('/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$/', $email) == true)
+	    {
+		    $user->setEmail($email);
+	    }
+	    else 
+	    {
+	    	$session->setFlash('L\'adresse mail n\'est pas valide');
+		
+			header('Location: /session/register');
+			exit;
+	    }
+
+		if(preg_match('/^\S+$/', $password) == true)
+		{
+		    $user->setPassword($password);
+		}
+	    else 
+	    {
+	    	$session->setFlash('Le mot de passe doit ne comporter que des chiffres et des lettres');
+			header('Location: /session/register');
+			exit;
+	    }
+		
 		$user->setToken($this->str_random(63));
 
 		$user->persist();
@@ -141,9 +173,7 @@ class SessionController extends Controller
 			exit;
 		}
 
-		$user = $auth->login($login, $password);
-
-		
+		$user = $auth->login($login, $password);		
 
 		if(is_null($user) == false)
 		{
