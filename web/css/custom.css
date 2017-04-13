@@ -38,11 +38,11 @@ p
 
 .background-home 
 {
-	background-image: url(../img/river2.jpg);
+	background-image: url(../img/river3.jpg);
 	background-repeat:no-repeat;
 	background-attachment: fixed;
 	background-size: 100%;
-	min-height: 800px;
+	min-height: 100%;
 }
 
 .background-article-list 

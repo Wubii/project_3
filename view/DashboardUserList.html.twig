@@ -44,12 +44,12 @@
                       <td>Administrateur</td>
                     {% endif %}
                     <td class="text-center">
-                      <a href="#" type="button" class="text-danger" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}"><span class="text-danger"><i class="fa fa-trash" aria-hidden="true"></i></span></a>
+                      <a href="#" type="button" class="text-danger" data-toggle="modal" data-target="#modalUserDelete" data-user-id="{{ user.id }}"><span class="text-danger" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="fa fa-trash" aria-hidden="true"></i></span></a>
                     </td>
                     {% if user.locked == 1 %}
-                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-success"><span class="text-danger"><i class="fa fa-lock" aria-hidden="true"></i></a></td>
+                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-success" data-toggle="tooltip" data-placement="top" title="Débloquer cet utilisateur"><span class="text-danger"><i class="fa fa-lock" aria-hidden="true"></i></a></td>
                     {% else %}
-                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-danger"><span class="text-success"><i class="fa fa-unlock" aria-hidden="true"></i></a></td>
+                      <td class="text-center"><a href="/dashboard/user/lock/toggle?id={{ user.id }}" type="button" class="text-danger"><span class="text-success" data-toggle="tooltip" data-placement="top" title="Bloquer cet utilisateur"><i class="fa fa-unlock" aria-hidden="true"></i></a></td>
                     {% endif %}
                   </tr>
                 {% endfor %}

@@ -27,10 +27,14 @@
             <div class="panel-body">	  
 	          <h4 id="comment{{ comment.id }}"> Le commentaire suivant a été écrit par {{ comment.pseudo }}, <small> le {{ comment.date | date("m/d/Y") }} </small></h4>	
 	          <p><i> {{ comment.content|raw }} </i></p> 
-	          <a href="/dashboard/comment/publish?id={{ comment.id }}" type="button" class="btn btn-xs btn-warning pull-right" style="margin-left:5px"> Publier </a>
-	          {#<!--<a href="/article?articleId={{ comment.articleId }}#comment{{ comment.id }}" type="button" class="btn btn-xs btn-primary pull-right" target="blank" style="margin-left:5px"> Voir </a>-->#}
-
-            <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment.id }}" type="button" class="btn btn-xs btn-danger pull-right"> Supprimer </a>
+	          <a href="/dashboard/comment/publish?id={{ comment.id }}" type="button" class="pull-right" style="margin-left:5px" data-toggle="tooltip" data-placement="top" title="Publier">
+              <i class="fa fa-toggle-on" aria-hidden="true"></i>
+            </a>
+            <a href="#" data-toggle="modal" data-target="#modalCommentDelete" data-comment-id="{{ comment.id }}" type="button" class="pull-right">
+              <span class="text-danger" data-toggle="tooltip" data-placement="top" title="Supprimer">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </span>  
+            </a>
 	        </div>
 	      </div>
         {% endfor %}
